@@ -47,7 +47,7 @@
   <view class="form-group">
     <text class="form-label">购买平台</text>
     <picker mode="selector" range="{{platforms}}" range-key="label" value="{{platformIndex}}" bindchange="onPlatformChange">
-      <view class="form-input picker-value">{{platforms[platformIndex].label}}</view>
+      <view class="picker-value">{{platforms[platformIndex].label}}</view>
     </picker>
   </view>
 
@@ -64,7 +64,7 @@
   <view class="form-group">
     <text class="form-label">上架时间 *</text>
     <picker mode="date" value="{{form.shelfTime}}" bindchange="onDateChange">
-      <view class="form-input picker-value">{{form.shelfTime || '请选择日期'}}</view>
+      <view class="picker-value">{{form.shelfTime || '请选择日期'}}</view>
     </picker>
   </view>
 
@@ -77,7 +77,12 @@
         bindtap="toggleDimension" data-field="collectionIds" data-id="{{item._id}}">
         {{item.periodLabel || item.title}}
       </view>
-      <view class="add-dimension-btn" bindtap="addDimension" data-type="collections" data-label="集合">+ 新增集合</view>
+      <view class="add-dimension-btn" bindtap="toggleInlineAdd" data-type="collections" wx:if="{{inlineAddType !== 'collections'}}">+ 新增集合</view>
+    </view>
+    <view class="inline-add-row" wx:if="{{inlineAddType === 'collections'}}">
+      <input class="inline-add-input" placeholder="输入集合名称" value="{{inlineAddName}}" bindinput="onInlineNameInput" focus="{{inlineAddType === 'collections'}}" />
+      <view class="inline-add-confirm" bindtap="confirmInlineAdd">确定</view>
+      <view class="inline-add-cancel" bindtap="cancelInlineAdd">取消</view>
     </view>
   </view>
 
@@ -90,7 +95,13 @@
         bindtap="toggleDimension" data-field="sceneIds" data-id="{{item._id}}">
         {{item.icon}} {{item.name}}
       </view>
-      <view class="add-dimension-btn" bindtap="addDimension" data-type="scenes" data-label="场景">+ 新增场景</view>
+      <view class="add-dimension-btn" bindtap="toggleInlineAdd" data-type="scenes" wx:if="{{inlineAddType !== 'scenes'}}">+ 新增场景</view>
+    </view>
+    <view class="inline-add-row" wx:if="{{inlineAddType === 'scenes'}}">
+      <input class="inline-add-input" placeholder="名称" value="{{inlineAddName}}" bindinput="onInlineNameInput" focus="{{inlineAddType === 'scenes'}}" style="flex:1;" />
+      <input class="inline-add-input" placeholder="emoji" value="{{inlineAddIcon}}" bindinput="onInlineIconInput" style="width:120rpx;flex:none;" />
+      <view class="inline-add-confirm" bindtap="confirmInlineAdd">确定</view>
+      <view class="inline-add-cancel" bindtap="cancelInlineAdd">取消</view>
     </view>
   </view>
 
@@ -103,7 +114,13 @@
         bindtap="toggleDimension" data-field="roomIds" data-id="{{item._id}}">
         {{item.icon}} {{item.name}}
       </view>
-      <view class="add-dimension-btn" bindtap="addDimension" data-type="rooms" data-label="房间">+ 新增房间</view>
+      <view class="add-dimension-btn" bindtap="toggleInlineAdd" data-type="rooms" wx:if="{{inlineAddType !== 'rooms'}}">+ 新增房间</view>
+    </view>
+    <view class="inline-add-row" wx:if="{{inlineAddType === 'rooms'}}">
+      <input class="inline-add-input" placeholder="名称" value="{{inlineAddName}}" bindinput="onInlineNameInput" focus="{{inlineAddType === 'rooms'}}" style="flex:1;" />
+      <input class="inline-add-input" placeholder="emoji" value="{{inlineAddIcon}}" bindinput="onInlineIconInput" style="width:120rpx;flex:none;" />
+      <view class="inline-add-confirm" bindtap="confirmInlineAdd">确定</view>
+      <view class="inline-add-cancel" bindtap="cancelInlineAdd">取消</view>
     </view>
   </view>
 
@@ -116,7 +133,12 @@
         bindtap="toggleDimension" data-field="tagIds" data-id="{{item._id}}">
         {{item.name}}
       </view>
-      <view class="add-dimension-btn" bindtap="addDimension" data-type="tags" data-label="标签">+ 新增标签</view>
+      <view class="add-dimension-btn" bindtap="toggleInlineAdd" data-type="tags" wx:if="{{inlineAddType !== 'tags'}}">+ 新增标签</view>
+    </view>
+    <view class="inline-add-row" wx:if="{{inlineAddType === 'tags'}}">
+      <input class="inline-add-input" placeholder="输入标签名称" value="{{inlineAddName}}" bindinput="onInlineNameInput" focus="{{inlineAddType === 'tags'}}" />
+      <view class="inline-add-confirm" bindtap="confirmInlineAdd">确定</view>
+      <view class="inline-add-cancel" bindtap="cancelInlineAdd">取消</view>
     </view>
   </view>
 
@@ -130,17 +152,4 @@
   </view>
 
   <view style="height: 60rpx;"></view>
-
-  <!-- 新增维度弹窗 -->
-  <view class="modal-overlay" wx:if="{{showAddModal}}" bindtap="closeAddModal">
-    <view class="modal-box" catchtap="">
-      <text class="modal-title">新增{{addModalLabel}}</text>
-      <input class="modal-input" placeholder="请输入名称" value="{{addModalName}}" bindinput="onModalNameInput" />
-      <input class="modal-input" placeholder="图标(emoji,可选) 如🎄" value="{{addModalIcon}}" bindinput="onModalIconInput" wx:if="{{addModalType !== 'tags' && addModalType !== 'collections'}}" />
-      <view class="modal-btns">
-        <button class="btn-ghost" bindtap="closeAddModal">取消</button>
-        <button class="btn-primary" bindtap="confirmAddDimension">确定</button>
-      </view>
-    </view>
-  </view>
 </view>

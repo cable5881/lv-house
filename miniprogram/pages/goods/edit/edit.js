@@ -19,12 +19,10 @@ Page({
     ],
     platformIndex: 0,
     allCollections: [], allScenes: [], allRooms: [], allTags: [],
-    // 新增维度弹窗
-    showAddModal: false,
-    addModalType: '',
-    addModalLabel: '',
-    addModalName: '',
-    addModalIcon: ''
+    // 内联新增
+    inlineAddType: '',
+    inlineAddName: '',
+    inlineAddIcon: ''
   },
 
   onLoad(options) {
@@ -51,7 +49,6 @@ Page({
         api.getRooms().catch(() => []),
         api.getTags().catch(() => [])
       ]);
-      // 云函数返回的可能是数组或 {list: []}
       this.setData({
         allCollections: Array.isArray(collections) ? collections : (collections.list || []),
         allScenes: Array.isArray(scenes) ? scenes : (scenes.list || []),
@@ -113,28 +110,26 @@ Page({
     this.setData({ ['form.' + field]: arr });
   },
 
-  // ===== 新增维度弹窗 =====
-  addDimension(e) {
-    const { type, label } = e.currentTarget.dataset;
+  // ===== 内联新增维度 =====
+  toggleInlineAdd(e) {
+    const { type } = e.currentTarget.dataset;
     this.setData({
-      showAddModal: true,
-      addModalType: type,
-      addModalLabel: label,
-      addModalName: '',
-      addModalIcon: ''
+      inlineAddType: type,
+      inlineAddName: '',
+      inlineAddIcon: ''
     });
   },
 
-  closeAddModal() {
-    this.setData({ showAddModal: false });
+  cancelInlineAdd() {
+    this.setData({ inlineAddType: '', inlineAddName: '', inlineAddIcon: '' });
   },
 
-  onModalNameInput(e) { this.setData({ addModalName: e.detail.value }); },
-  onModalIconInput(e) { this.setData({ addModalIcon: e.detail.value }); },
+  onInlineNameInput(e) { this.setData({ inlineAddName: e.detail.value }); },
+  onInlineIconInput(e) { this.setData({ inlineAddIcon: e.detail.value }); },
 
-  async confirmAddDimension() {
-    const { addModalType, addModalName, addModalIcon } = this.data;
-    if (!addModalName.trim()) {
+  async confirmInlineAdd() {
+    const { inlineAddType, inlineAddName, inlineAddIcon } = this.data;
+    if (!inlineAddName.trim()) {
       wx.showToast({ title: '请输入名称', icon: 'none' });
       return;
     }
@@ -144,29 +139,33 @@ Page({
       const db = wx.cloud.database();
       let newDoc = { createdAt: db.serverDate() };
 
-      if (addModalType === 'collections') {
-        newDoc.title = addModalName.trim();
-        newDoc.periodLabel = addModalName.trim();
-      } else if (addModalType === 'tags') {
-        newDoc.name = addModalName.trim();
+      if (inlineAddType === 'collections') {
+        newDoc.title = inlineAddName.trim();
+        newDoc.periodLabel = inlineAddName.trim();
+      } else if (inlineAddType === 'tags') {
+        newDoc.name = inlineAddName.trim();
       } else {
-        newDoc.name = addModalName.trim();
-        newDoc.icon = addModalIcon.trim() || '';
+        newDoc.name = inlineAddName.trim();
+        newDoc.icon = inlineAddIcon.trim() || '';
       }
 
-      const res = await db.collection(addModalType).add({ data: newDoc });
+      const res = await db.collection(inlineAddType).add({ data: newDoc });
       newDoc._id = res._id;
 
-      // 添加到本地列表
       const fieldMap = {
         collections: 'allCollections',
         scenes: 'allScenes',
         rooms: 'allRooms',
         tags: 'allTags'
       };
-      const listField = fieldMap[addModalType];
+      const listField = fieldMap[inlineAddType];
       const list = [...this.data[listField], newDoc];
-      this.setData({ [listField]: list, showAddModal: false });
+      this.setData({
+        [listField]: list,
+        inlineAddType: '',
+        inlineAddName: '',
+        inlineAddIcon: ''
+      });
 
       wx.hideLoading();
       wx.showToast({ title: '添加成功', icon: 'success' });
