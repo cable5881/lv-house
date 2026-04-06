@@ -16,7 +16,6 @@ Page({
   },
 
   onNickNameBlur(e) {
-    // type="nickname" 组件在 blur 时回填微信昵称
     if (e.detail.value) {
       this.setData({ nickName: e.detail.value });
     }
@@ -35,7 +34,6 @@ Page({
       if (Object.keys(updates).length > 0) {
         const api = require('../../../utils/api');
         await api.updateUserInfo(updates);
-        // 同步到本地
         const app = getApp();
         Object.assign(app.globalData.userInfo, updates);
         wx.setStorageSync('userInfo', app.globalData.userInfo);
@@ -48,8 +46,13 @@ Page({
       }, 1000);
     } catch (err) {
       wx.hideLoading();
-      console.error('登录失败', err);
-      wx.showToast({ title: '登录失败', icon: 'none' });
+      console.error('登录失败详情:', err);
+      // 显示具体错误信息帮助排查
+      wx.showModal({
+        title: '登录失败',
+        content: err.message || JSON.stringify(err),
+        showCancel: false
+      });
     }
   },
 

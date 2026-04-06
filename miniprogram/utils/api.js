@@ -6,61 +6,28 @@ const callCloud = (name, data = {}) => {
     name,
     data
   }).then(res => {
+    console.log(`[云函数] ${name} 返回:`, res.result);
     if (res.result && res.result.code === 0) {
       return res.result.data;
     }
-    throw new Error(res.result ? res.result.message : '云函数调用失败');
+    const msg = res.result ? res.result.message : '云函数返回异常';
+    console.error(`[云函数] ${name} 业务错误:`, msg);
+    throw new Error(msg);
+  }).catch(err => {
+    console.error(`[云函数] ${name} 调用失败:`, err);
+    throw err;
   });
 };
 
 module.exports = {
-  // 登录
-  login() {
-    return callCloud('login');
-  },
-
-  // 好物列表
-  getGoods(params = {}) {
-    return callCloud('getGoods', params);
-  },
-
-  // 好物详情
-  getGoodsDetail(id) {
-    return callCloud('getGoodsDetail', { id });
-  },
-
-  // 保存好物（新增/编辑）
-  saveGoods(data) {
-    return callCloud('saveGoods', data);
-  },
-
-  // 删除好物
-  deleteGoods(id) {
-    return callCloud('deleteGoods', { id });
-  },
-
-  // 获取集合列表
-  getCollections(params = {}) {
-    return callCloud('getCollections', params);
-  },
-
-  // 获取场景列表
-  getScenes() {
-    return callCloud('getScenes');
-  },
-
-  // 获取房间列表
-  getRooms() {
-    return callCloud('getRooms');
-  },
-
-  // 获取标签列表
-  getTags() {
-    return callCloud('getTags');
-  },
-
-  // 更新用户信息
-  updateUserInfo(data) {
-    return callCloud('updateUserInfo', data);
-  }
+  login() { return callCloud('login'); },
+  getGoods(params = {}) { return callCloud('getGoods', params); },
+  getGoodsDetail(id) { return callCloud('getGoodsDetail', { id }); },
+  saveGoods(data) { return callCloud('saveGoods', data); },
+  deleteGoods(id) { return callCloud('deleteGoods', { id }); },
+  getCollections(params = {}) { return callCloud('getCollections', params); },
+  getScenes() { return callCloud('getScenes'); },
+  getRooms() { return callCloud('getRooms'); },
+  getTags() { return callCloud('getTags'); },
+  updateUserInfo(data) { return callCloud('updateUserInfo', data); }
 };
