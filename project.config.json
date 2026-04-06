@@ -2,6 +2,7 @@
   "description": "小吕孩的出租屋 - 租房好物推荐",
   "miniprogramRoot": "miniprogram/",
   "cloudfunctionRoot": "cloudfunctions/",
+  "cloudbaseRoot": "cloudfunctions/",
   "packOptions": {
     "ignore": [],
     "include": []
@@ -41,5 +42,17 @@
   "simulatorType": "wechat",
   "condition": {},
   "editorSetting": {},
-  "cloudfunctionTemplateRoot": "cloudfunctionTemplate/"
+  "cloudfunctionTemplateRoot": "cloudfunctionTemplate/",
+  "cloudfunctions": [
+    { "name": "login", "root": "cloudfunctions/login" },
+    { "name": "getGoods", "root": "cloudfunctions/getGoods" },
+    { "name": "getGoodsDetail", "root": "cloudfunctions/getGoodsDetail" },
+    { "name": "saveGoods", "root": "cloudfunctions/saveGoods" },
+    { "name": "deleteGoods", "root": "cloudfunctions/deleteGoods" },
+    { "name": "getCollections", "root": "cloudfunctions/getCollections" },
+    { "name": "getScenes", "root": "cloudfunctions/getScenes" },
+    { "name": "getRooms", "root": "cloudfunctions/getRooms" },
+    { "name": "getTags", "root": "cloudfunctions/getTags" },
+    { "name": "updateUserInfo", "root": "cloudfunctions/updateUserInfo" }
+  ]
 }
