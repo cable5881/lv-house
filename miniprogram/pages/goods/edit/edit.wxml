@@ -1,0 +1,126 @@
+<view class="edit-page page-container">
+  <!-- 好物名称 -->
+  <view class="form-group">
+    <text class="form-label">好物名称 *</text>
+    <input class="form-input" placeholder="请输入好物名称" value="{{form.name}}" bindinput="onInput" data-field="name" />
+  </view>
+
+  <!-- 副标题 -->
+  <view class="form-group">
+    <text class="form-label">副标题</text>
+    <input class="form-input" placeholder="一句话描述卖点" value="{{form.subtitle}}" bindinput="onInput" data-field="subtitle" />
+  </view>
+
+  <!-- 图片上传 -->
+  <view class="form-group">
+    <text class="form-label">好物图片 *（至少1张，最多9张）</text>
+    <view class="image-grid">
+      <view class="image-item" wx:for="{{form.images}}" wx:key="*this">
+        <image class="preview-img" src="{{item}}" mode="aspectFill" />
+        <view class="remove-btn" bindtap="removeImage" data-index="{{index}}">×</view>
+      </view>
+      <view class="image-item add-btn" wx:if="{{form.images.length < 9}}" bindtap="chooseImage">
+        <text class="add-icon">+</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 描述 -->
+  <view class="form-group">
+    <text class="form-label">好物描述 *</text>
+    <textarea class="form-textarea" placeholder="详细描述这个好物..." value="{{form.description}}" bindinput="onInput" data-field="description" />
+  </view>
+
+  <!-- 价格 -->
+  <view class="form-group">
+    <text class="form-label">参考价格（元）*</text>
+    <input class="form-input" type="digit" placeholder="0.00" value="{{form.price}}" bindinput="onInput" data-field="price" />
+  </view>
+
+  <!-- 商品链接 -->
+  <view class="form-group">
+    <text class="form-label">商品链接 *</text>
+    <input class="form-input" placeholder="粘贴商品购买链接" value="{{form.purchaseLink}}" bindinput="onInput" data-field="purchaseLink" />
+  </view>
+
+  <!-- 购买平台 -->
+  <view class="form-group">
+    <text class="form-label">购买平台</text>
+    <picker mode="selector" range="{{platforms}}" range-key="label" value="{{platformIndex}}" bindchange="onPlatformChange">
+      <view class="form-input picker-value">{{platforms[platformIndex].label}}</view>
+    </picker>
+  </view>
+
+  <!-- 推荐指数 -->
+  <view class="form-group">
+    <text class="form-label">推荐指数 *（1-10）</text>
+    <slider min="1" max="10" step="1" value="{{form.rating}}" show-value activeColor="#FFB800" bindchange="onRatingChange" />
+    <view class="rating-preview">
+      <star-rating rating="{{form.rating}}" />
+    </view>
+  </view>
+
+  <!-- 上架时间 -->
+  <view class="form-group">
+    <text class="form-label">上架时间 *</text>
+    <picker mode="date" value="{{form.shelfTime}}" bindchange="onDateChange">
+      <view class="form-input picker-value">{{form.shelfTime || '请选择日期'}}</view>
+    </picker>
+  </view>
+
+  <!-- 维度归类 -->
+  <view class="form-group">
+    <text class="form-label">小红书集合（可多选）</text>
+    <view class="checkbox-group">
+      <view class="checkbox-item {{form.collectionIds.indexOf(item._id) >= 0 ? 'checked' : ''}}"
+        wx:for="{{allCollections}}" wx:key="_id"
+        bindtap="toggleDimension" data-field="collectionIds" data-id="{{item._id}}">
+        {{item.periodLabel || item.title}}
+      </view>
+    </view>
+  </view>
+
+  <view class="form-group">
+    <text class="form-label">场景（可多选）</text>
+    <view class="checkbox-group">
+      <view class="checkbox-item {{form.sceneIds.indexOf(item._id) >= 0 ? 'checked' : ''}}"
+        wx:for="{{allScenes}}" wx:key="_id"
+        bindtap="toggleDimension" data-field="sceneIds" data-id="{{item._id}}">
+        {{item.icon}} {{item.name}}
+      </view>
+    </view>
+  </view>
+
+  <view class="form-group">
+    <text class="form-label">房间（可多选）</text>
+    <view class="checkbox-group">
+      <view class="checkbox-item {{form.roomIds.indexOf(item._id) >= 0 ? 'checked' : ''}}"
+        wx:for="{{allRooms}}" wx:key="_id"
+        bindtap="toggleDimension" data-field="roomIds" data-id="{{item._id}}">
+        {{item.icon}} {{item.name}}
+      </view>
+    </view>
+  </view>
+
+  <view class="form-group">
+    <text class="form-label">标签（可多选）</text>
+    <view class="checkbox-group">
+      <view class="checkbox-item {{form.tagIds.indexOf(item._id) >= 0 ? 'checked' : ''}}"
+        wx:for="{{allTags}}" wx:key="_id"
+        bindtap="toggleDimension" data-field="tagIds" data-id="{{item._id}}">
+        {{item.name}}
+      </view>
+    </view>
+  </view>
+
+  <!-- 操作按钮 -->
+  <view class="btn-group">
+    <button class="btn-ghost" bindtap="saveDraft">保存草稿</button>
+    <button class="btn-primary" bindtap="publish">发布上架</button>
+  </view>
+  <view class="delete-row" wx:if="{{isEdit}}" bindtap="deleteGoods">
+    <text class="delete-text">删除此好物</text>
+  </view>
+
+  <view style="height: 60rpx;"></view>
+</view>

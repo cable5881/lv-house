@@ -1,0 +1,91 @@
+<view class="page-container">
+  <!-- 搜索栏 -->
+  <view class="search-bar" bindtap="goSearch">
+    <text class="search-icon">🔍</text>
+    <text class="search-placeholder">搜索租房好物...</text>
+  </view>
+
+  <!-- 小红书精选 -->
+  <view class="section" wx:if="{{collections.length}}">
+    <view class="section-header">
+      <text class="section-title">📕 小红书精选</text>
+      <text class="view-all" bindtap="goCollectionList">查看全部 ></text>
+    </view>
+    <scroll-view scroll-x class="collection-scroll" enhanced show-scrollbar="{{false}}">
+      <view class="collection-item card" wx:for="{{collections}}" wx:key="_id" bindtap="goCollection" data-id="{{item._id}}">
+        <image class="collection-cover" src="{{item.coverImage}}" mode="aspectFill" />
+        <view class="collection-info">
+          <text class="collection-period">{{item.periodLabel}}</text>
+          <text class="collection-title">{{item.title}}</text>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 按场景逛 -->
+  <view class="section" wx:if="{{scenes.length}}">
+    <text class="section-title">🎯 按场景逛</text>
+    <view class="scene-grid">
+      <view class="scene-item" wx:for="{{scenes}}" wx:key="_id" bindtap="goSceneList" data-id="{{item._id}}" data-name="{{item.name}}">
+        <text class="scene-icon">{{item.icon}}</text>
+        <text class="scene-name">{{item.name}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 按房间逛 -->
+  <view class="section" wx:if="{{rooms.length}}">
+    <text class="section-title">🏠 按房间逛</text>
+    <scroll-view scroll-x class="room-tabs" enhanced show-scrollbar="{{false}}">
+      <view
+        class="room-tab {{activeRoomId === item._id ? 'active' : ''}}"
+        wx:for="{{rooms}}" wx:key="_id"
+        bindtap="switchRoom" data-id="{{item._id}}"
+      >
+        <text>{{item.icon}} {{item.name}}</text>
+      </view>
+    </scroll-view>
+    <view class="goods-grid">
+      <view class="goods-grid-item" wx:for="{{roomGoods}}" wx:key="_id">
+        <goods-card goods="{{item}}" />
+      </view>
+    </view>
+    <empty-state wx:if="{{!roomGoods.length && !loading}}" text="该房间暂无好物" />
+  </view>
+
+  <!-- 编辑推荐 -->
+  <view class="section" wx:if="{{recommendGoods.length}}">
+    <text class="section-title">⭐ 编辑推荐</text>
+    <view class="goods-grid">
+      <view class="goods-grid-item" wx:for="{{recommendGoods}}" wx:key="_id">
+        <goods-card goods="{{item}}" />
+      </view>
+    </view>
+  </view>
+
+  <!-- 全部好物 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">🛒 全部好物</text>
+    </view>
+    <scroll-view scroll-x class="sort-tabs" enhanced show-scrollbar="{{false}}">
+      <view class="sort-tab {{sortBy === 'latest' ? 'active' : ''}}" bindtap="changeSort" data-sort="latest">最新</view>
+      <view class="sort-tab {{sortBy === 'hot' ? 'active' : ''}}" bindtap="changeSort" data-sort="hot">最热</view>
+      <view class="sort-tab {{sortBy === 'rating' ? 'active' : ''}}" bindtap="changeSort" data-sort="rating">评分最高</view>
+    </scroll-view>
+    <view class="goods-grid">
+      <view class="goods-grid-item" wx:for="{{allGoods}}" wx:key="_id">
+        <goods-card goods="{{item}}" />
+      </view>
+    </view>
+    <empty-state wx:if="{{!allGoods.length && !loading}}" text="暂无好物" />
+    <view class="loading-more" wx:if="{{loading}}">
+      <text>加载中...</text>
+    </view>
+  </view>
+
+  <!-- 管理员悬浮按钮 -->
+  <view class="fab-btn" wx:if="{{isAdmin}}" bindtap="goAddGoods">
+    <text class="fab-icon">+</text>
+  </view>
+</view>

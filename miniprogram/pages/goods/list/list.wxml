@@ -1,0 +1,9 @@
+<view class="page-container">
+  <view class="goods-grid">
+    <view class="goods-grid-item" wx:for="{{goods}}" wx:key="_id">
+      <goods-card goods="{{item}}" />
+    </view>
+  </view>
+  <empty-state wx:if="{{!goods.length && !loading}}" text="暂无好物" />
+  <view class="loading-more" wx:if="{{loading}}"><text>加载中...</text></view>
+</view>

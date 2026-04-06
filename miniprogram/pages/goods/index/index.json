@@ -1,0 +1,8 @@
+{
+  "usingComponents": {
+    "goods-card": "/components/goods-card/index",
+    "star-rating": "/components/star-rating/index",
+    "empty-state": "/components/empty-state/index"
+  },
+  "enablePullDownRefresh": true
+}

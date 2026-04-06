@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "star-rating": "/components/star-rating/index",
+    "goods-card": "/components/goods-card/index"
+  },
+  "navigationBarTitleText": "\u597d\u7269\u8be6\u60c5"
+}

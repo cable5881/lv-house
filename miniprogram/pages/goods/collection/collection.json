@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "goods-card": "/components/goods-card/index",
+    "empty-state": "/components/empty-state/index"
+  },
+  "navigationBarTitleText": "\u5c0f\u7ea2\u4e66\u7cbe\u9009"
+}

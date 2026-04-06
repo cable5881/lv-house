@@ -1,0 +1,10 @@
+<view class="star-rating">
+  <block wx:for="{{starsArray}}" wx:key="index">
+    <image
+      class="star-icon"
+      src="{{item === 'full' ? '/images/star-full.svg' : item === 'half' ? '/images/star-half.svg' : '/images/star-empty.svg'}}"
+    />
+  </block>
+  <text class="rating-text">{{displayText}}</text>
+  <text wx:if="{{isRecommended}}" class="recommend-badge">编辑推荐</text>
+</view>

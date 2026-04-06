@@ -1,0 +1,2 @@
+.tag { display: inline-flex; border-radius: 9999rpx; padding: 6rpx 20rpx; margin-right: 12rpx; margin-bottom: 12rpx; }
+.tag-text { font-size: 22rpx; color: #5F5F5D; }

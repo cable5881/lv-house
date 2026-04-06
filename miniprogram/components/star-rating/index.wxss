@@ -1,0 +1,27 @@
+.star-rating {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+}
+
+.star-icon {
+  width: 28rpx;
+  height: 28rpx;
+  margin-right: 4rpx;
+}
+
+.rating-text {
+  font-size: 24rpx;
+  color: #5F5F5D;
+  margin-left: 8rpx;
+  font-weight: 500;
+}
+
+.recommend-badge {
+  font-size: 20rpx;
+  color: #FCFBF8;
+  background: #1C1C1C;
+  border-radius: 9999rpx;
+  padding: 4rpx 14rpx;
+  margin-left: 12rpx;
+}

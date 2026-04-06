@@ -1,0 +1,5 @@
+<view class="login-page">
+  <text class="login-title">小吕孩的出租屋</text>
+  <text class="login-subtitle">发现租房好物</text>
+  <button class="btn-primary login-btn" bindtap="doLogin">微信登录</button>
+</view>

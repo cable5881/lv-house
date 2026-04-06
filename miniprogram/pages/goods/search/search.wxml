@@ -1,0 +1,11 @@
+<view class="page-container">
+  <view class="search-input-wrap">
+    <input class="search-input" placeholder="搜索租房好物..." focus confirm-type="search" bindinput="onInput" bindconfirm="doSearch" value="{{keyword}}" />
+  </view>
+  <view class="goods-grid" wx:if="{{goods.length}}">
+    <view class="goods-grid-item" wx:for="{{goods}}" wx:key="_id">
+      <goods-card goods="{{item}}" />
+    </view>
+  </view>
+  <empty-state wx:if="{{searched && !goods.length}}" text="没有找到相关好物" />
+</view>

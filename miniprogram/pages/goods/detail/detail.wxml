@@ -1,0 +1,70 @@
+<view class="detail-page" wx:if="{{goods}}">
+  <!-- 图片轮播 -->
+  <swiper class="image-swiper" indicator-dots indicator-color="#ECEAE4" indicator-active-color="#1C1C1C" circular>
+    <swiper-item wx:for="{{goods.images}}" wx:key="*this">
+      <image class="swiper-image" src="{{item}}" mode="aspectFill" bindtap="previewImage" data-src="{{item}}" />
+    </swiper-item>
+  </swiper>
+
+  <!-- 基本信息 -->
+  <view class="info-section">
+    <text class="goods-name">{{goods.name}}</text>
+    <text class="goods-subtitle" wx:if="{{goods.subtitle}}">{{goods.subtitle}}</text>
+    <view class="rating-row">
+      <star-rating rating="{{goods.rating}}" />
+    </view>
+    <text class="goods-price price-text">¥{{goods.price}}</text>
+    <view class="tags-row" wx:if="{{goods.tagNames && goods.tagNames.length}}">
+      <text class="tag-pill" wx:for="{{goods.tagNames}}" wx:key="*this">{{item}}</text>
+    </view>
+    <text class="shelf-time text-secondary">上架时间：{{shelfTimeText}}</text>
+  </view>
+
+  <!-- 好物描述 -->
+  <view class="desc-section" wx:if="{{goods.description}}">
+    <text class="section-title">好物描述</text>
+    <text class="desc-text">{{goods.description}}</text>
+  </view>
+
+  <!-- 所属维度 -->
+  <view class="dimension-section" wx:if="{{goods.collectionNames || goods.sceneNames || goods.roomNames}}">
+    <view class="dim-row" wx:if="{{goods.collectionNames.length}}">
+      <text class="dim-label">来自</text>
+      <text class="dim-value" wx:for="{{goods.collectionNames}}" wx:key="*this">📕 {{item}}</text>
+    </view>
+    <view class="dim-row" wx:if="{{goods.roomNames.length}}">
+      <text class="dim-label">适用</text>
+      <text class="dim-value" wx:for="{{goods.roomNames}}" wx:key="*this">🏠 {{item}}</text>
+    </view>
+    <view class="dim-row" wx:if="{{goods.sceneNames.length}}">
+      <text class="dim-label">场景</text>
+      <text class="dim-value" wx:for="{{goods.sceneNames}}" wx:key="*this">🎯 {{item}}</text>
+    </view>
+  </view>
+
+  <!-- 相关推荐 -->
+  <view class="related-section" wx:if="{{relatedGoods.length}}">
+    <text class="section-title">看了又看</text>
+    <scroll-view scroll-x class="related-scroll" enhanced show-scrollbar="{{false}}">
+      <view class="related-item" wx:for="{{relatedGoods}}" wx:key="_id">
+        <goods-card goods="{{item}}" />
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 底部安全区占位 -->
+  <view style="height: 140rpx;"></view>
+</view>
+
+<!-- 底部操作栏 -->
+<view class="bottom-bar">
+  <view class="bar-btn edit-btn" wx:if="{{isAdmin}}" bindtap="goEdit">
+    <text>✏️ 编辑</text>
+  </view>
+  <view class="bar-btn copy-btn" bindtap="copyLink">
+    <text>🔗 复制链接</text>
+  </view>
+  <view class="bar-btn buy-btn" bindtap="goBuy">
+    <text>🛒 去购买</text>
+  </view>
+</view>

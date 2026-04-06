@@ -1,0 +1,7 @@
+node_modules/
+miniprogram_npm/
+.DS_Store
+*.log
+project.private.config.json
+gen_project.py
+package-lock.json

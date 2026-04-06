@@ -1,0 +1,16 @@
+<view class="goods-card card" bindtap="onTap">
+  <image
+    class="goods-image"
+    src="{{goods.images[0] || '/images/placeholder.svg'}}"
+    mode="aspectFill"
+    lazy-load
+  />
+  <view class="goods-info">
+    <text class="goods-name">{{goods.name}}</text>
+    <star-rating rating="{{goods.rating}}" />
+    <text class="goods-price price-text">¥{{goods.price}}</text>
+  </view>
+  <view wx:if="{{goods.tags && goods.tags.length}}" class="goods-tags">
+    <text wx:for="{{goods.tags}}" wx:key="*this" class="tag-pill">{{item}}</text>
+  </view>
+</view>

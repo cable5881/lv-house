@@ -1,0 +1,4 @@
+.login-page { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 80vh; padding: 64rpx; }
+.login-title { font-size: 48rpx; font-weight: 600; margin-bottom: 16rpx; }
+.login-subtitle { font-size: 28rpx; color: #5F5F5D; margin-bottom: 80rpx; }
+.login-btn { width: 80%; }

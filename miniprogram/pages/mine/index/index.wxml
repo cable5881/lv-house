@@ -1,0 +1,55 @@
+<view class="mine-page">
+  <!-- 未登录 -->
+  <view class="profile-card card" wx:if="{{!isLoggedIn}}" bindtap="doLogin">
+    <image class="avatar avatar-default" src="/images/default-avatar.svg" />
+    <text class="login-hint">点击登录</text>
+  </view>
+
+  <!-- 已登录 -->
+  <view class="profile-card card" wx:if="{{isLoggedIn}}">
+    <image class="avatar" src="{{userInfo.avatarUrl || '/images/default-avatar.svg'}}" />
+    <view class="user-info">
+      <text class="user-name">{{userInfo.nickName || '用户'}}</text>
+      <text class="user-detail" wx:if="{{userInfo.birthday}}">🎂 {{userInfo.birthday}}</text>
+      <text class="user-detail" wx:if="{{genderText}}">{{genderText}}</text>
+      <text class="admin-badge" wx:if="{{isAdmin}}">管理员</text>
+    </view>
+  </view>
+
+  <!-- 菜单列表 -->
+  <view class="menu-list" wx:if="{{isLoggedIn}}">
+    <view class="menu-item" bindtap="editProfile">
+      <text>📝 编辑资料</text>
+      <text class="arrow">></text>
+    </view>
+    <view class="menu-item" wx:if="{{isAdmin}}" bindtap="goDataManage">
+      <text>📊 数据管理</text>
+      <text class="arrow">></text>
+    </view>
+  </view>
+
+  <!-- 编辑资料弹窗 -->
+  <view class="edit-overlay" wx:if="{{showEditProfile}}" bindtap="closeEditProfile">
+    <view class="edit-panel" catchtap="">
+      <text class="edit-title">编辑资料</text>
+      <view class="form-group">
+        <text class="form-label">生日</text>
+        <picker mode="date" value="{{editBirthday}}" bindchange="onBirthdayChange">
+          <view class="form-input">{{editBirthday || '请选择'}}</view>
+        </picker>
+      </view>
+      <view class="form-group">
+        <text class="form-label">性别</text>
+        <picker mode="selector" range="{{genderOptions}}" range-key="label" value="{{editGenderIndex}}" bindchange="onGenderChange">
+          <view class="form-input">{{genderOptions[editGenderIndex].label}}</view>
+        </picker>
+      </view>
+      <button class="btn-primary" bindtap="saveProfile">保存</button>
+    </view>
+  </view>
+
+  <!-- 退出登录 -->
+  <view class="logout-section" wx:if="{{isLoggedIn}}">
+    <button class="btn-danger" bindtap="doLogout">退出登录</button>
+  </view>
+</view>

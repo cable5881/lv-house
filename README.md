@@ -1,37 +1,41 @@
-# 微信小程序示例
-微信小程序示例源码，欢迎扫描以下小程序码体验。
+# 小吕孩的出租屋 (lv-house)
 
-> 提示：请使用微信开发者工具或微信客户端 6.7.2 及以上版本运行。
+租房好物推荐微信小程序，与小红书自媒体联动运营。
 
-<img width="200" src="https://res.wx.qq.com/op_res/QqOF7ydl0dkpq-orpebXL-gBspr08VjoFOFGrWvKF9IULLhfT9XhnsSKlvc0gI8d">
+## 功能特性
 
-## 使用
+- 📕 **小红书集合**：按期展示博主推荐好物
+- 🎯 **场景分组**：搬家必备、过年焕新、情人节等
+- 🏠 **房间分类**：卧室、厨房、客厅、卫生间等
+- ⭐ **推荐指数**：1-10分星星评分体系
+- 🛒 **商品链接**：一键复制购买链接
+- 👤 **角色管理**：普通用户 / 管理员
+- ✏️ **管理员编辑**：在线新增/编辑/删除好物
 
-```
-cd demo
-npm i
-cd miniprogram
-npm i
-```
-完成上述步骤后，使用微信开发者工具，点击【工具-构建npm】
+## 技术栈
 
-使用[微信开发者工具](https://developers.weixin.qq.com/miniprogram/dev/devtools/download.html)打开该示例代码，云开发环境搭建请参考[云开发示例说明](https://github.com/wechat-miniprogram/miniprogram-demo/blob/master/miniprogram/page/cloud/README.md)。
+- 微信小程序原生开发
+- 微信云开发（云函数 + 云数据库 + 云存储）
+- Lovable Design System 设计规范
 
-
-## 贡献
-
-如果你有 bug 反馈或其他任何建议，欢迎提 issue 给我们。
-
-如果你愿意一起来完善小程序示例，欢迎通过 PR 的方式贡献代码。为了保证代码风格的统一，在编写代码之前，请在项目根目录运行以下命令安装依赖：
+## 项目结构
 
 ```
-npm install
-```
-同时，确保你的代码可以通过 Lint 检查：
-```
-npm run lint
+lv-house/
+├── cloudfunctions/     # 云函数
+├── miniprogram/        # 小程序代码
+│   ├── components/     # 公共组件
+│   ├── pages/          # 页面
+│   ├── utils/          # 工具函数
+│   └── images/         # 图标资源
+└── project.config.json
 ```
 
-## 截图
+## 开始使用
 
-<img width="375" src="https://res.wx.qq.com/op_res/0_vsSii5DaG-1hoXcqmBCT_tPShgSPKi3_FBVuVj1tu1ZdZD8lwYNrSQm3mdswI2">
+1. 克隆仓库
+2. 微信开发者工具导入项目
+3. 创建云开发环境
+4. 初始化数据库集合：users, goods, collections, scenes, rooms, tags
+5. 部署全部云函数
+6. 编译运行

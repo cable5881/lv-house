@@ -1,0 +1,45 @@
+.detail-page { background: #F7F4ED; min-height: 100vh; }
+
+/* 轮播 */
+.image-swiper { width: 100%; height: 750rpx; }
+.swiper-image { width: 100%; height: 750rpx; }
+
+/* 信息 */
+.info-section { padding: 32rpx; background: #fff; border-radius: 24rpx 24rpx 0 0; margin-top: -40rpx; position: relative; z-index: 1; }
+.goods-name { font-size: 36rpx; font-weight: 600; display: block; margin-bottom: 8rpx; }
+.goods-subtitle { font-size: 26rpx; color: #5F5F5D; display: block; margin-bottom: 16rpx; }
+.rating-row { margin-bottom: 16rpx; }
+.goods-price { font-size: 36rpx; display: block; margin-bottom: 16rpx; }
+.tags-row { margin-bottom: 16rpx; display: flex; flex-wrap: wrap; }
+.shelf-time { display: block; }
+
+/* 描述 */
+.desc-section { padding: 32rpx; margin-top: 16rpx; background: #fff; }
+.desc-text { font-size: 28rpx; line-height: 1.8; color: #1C1C1C; white-space: pre-wrap; }
+
+/* 维度 */
+.dimension-section { padding: 32rpx; margin-top: 16rpx; background: #fff; }
+.dim-row { display: flex; align-items: center; flex-wrap: wrap; margin-bottom: 12rpx; }
+.dim-label { font-size: 24rpx; color: #5F5F5D; margin-right: 16rpx; }
+.dim-value { font-size: 24rpx; color: #1C1C1C; margin-right: 16rpx; }
+
+/* 相关 */
+.related-section { padding: 32rpx; margin-top: 16rpx; background: #fff; }
+.related-scroll { white-space: nowrap; }
+.related-item { display: inline-block; width: 280rpx; margin-right: 20rpx; vertical-align: top; white-space: normal; }
+
+/* 底部栏 */
+.bottom-bar {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  display: flex;
+  background: #fff;
+  padding: 16rpx 32rpx;
+  padding-bottom: calc(16rpx + env(safe-area-inset-bottom));
+  border-top: 1px solid #ECEAE4;
+  z-index: 100;
+}
+.bar-btn { flex: 1; text-align: center; padding: 18rpx 0; font-size: 26rpx; margin: 0 8rpx; border-radius: 12rpx; }
+.edit-btn { border: 1px solid #ECEAE4; }
+.copy-btn { border: 1px solid #ECEAE4; }
+.buy-btn { background: #1C1C1C; color: #FCFBF8; }

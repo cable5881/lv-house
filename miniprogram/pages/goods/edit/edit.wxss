@@ -1,0 +1,28 @@
+.edit-page { padding-top: 20rpx; padding-bottom: 40rpx; }
+.form-group { margin-bottom: 36rpx; }
+.form-label { font-size: 26rpx; font-weight: 500; color: #1C1C1C; margin-bottom: 12rpx; display: block; }
+.form-input { background: rgba(28,28,28,0.04); border: 1px solid #ECEAE4; border-radius: 12rpx; padding: 20rpx 24rpx; font-size: 28rpx; width: 100%; box-sizing: border-box; }
+.form-textarea { background: rgba(28,28,28,0.04); border: 1px solid #ECEAE4; border-radius: 12rpx; padding: 20rpx 24rpx; font-size: 28rpx; width: 100%; min-height: 200rpx; box-sizing: border-box; }
+.picker-value { color: #1C1C1C; }
+
+/* 图片 */
+.image-grid { display: flex; flex-wrap: wrap; }
+.image-item { width: 160rpx; height: 160rpx; margin-right: 16rpx; margin-bottom: 16rpx; border-radius: 12rpx; overflow: hidden; position: relative; }
+.preview-img { width: 100%; height: 100%; }
+.remove-btn { position: absolute; top: 0; right: 0; width: 40rpx; height: 40rpx; background: rgba(0,0,0,0.5); color: #fff; font-size: 28rpx; text-align: center; line-height: 40rpx; border-radius: 0 12rpx 0 12rpx; }
+.add-btn { background: rgba(28,28,28,0.04); border: 1px dashed #ECEAE4; display: flex; align-items: center; justify-content: center; }
+.add-icon { font-size: 48rpx; color: #5F5F5D; }
+
+/* 星星预览 */
+.rating-preview { margin-top: 12rpx; }
+
+/* 多选 */
+.checkbox-group { display: flex; flex-wrap: wrap; }
+.checkbox-item { padding: 10rpx 24rpx; border-radius: 9999rpx; background: rgba(28,28,28,0.04); font-size: 24rpx; color: #5F5F5D; margin-right: 16rpx; margin-bottom: 12rpx; }
+.checkbox-item.checked { background: #1C1C1C; color: #FCFBF8; }
+
+/* 按钮 */
+.btn-group { display: flex; margin-top: 48rpx; }
+.btn-group .btn-ghost, .btn-group .btn-primary { flex: 1; margin: 0 8rpx; }
+.delete-row { text-align: center; margin-top: 32rpx; }
+.delete-text { color: #E85D5D; font-size: 28rpx; }

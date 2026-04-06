@@ -1,0 +1,93 @@
+/* 搜索栏 */
+.search-bar {
+  display: flex;
+  align-items: center;
+  background: rgba(28,28,28,0.04);
+  border-radius: 12rpx;
+  padding: 20rpx 24rpx;
+  margin: 20rpx 0 32rpx;
+}
+.search-icon { font-size: 28rpx; margin-right: 12rpx; }
+.search-placeholder { font-size: 26rpx; color: #5F5F5D; }
+
+/* Section */
+.section { margin-bottom: 48rpx; }
+
+/* 集合横滑 */
+.collection-scroll { white-space: nowrap; }
+.collection-item {
+  display: inline-block;
+  width: 280rpx;
+  margin-right: 20rpx;
+  vertical-align: top;
+  white-space: normal;
+}
+.collection-cover { width: 280rpx; height: 180rpx; border-radius: 24rpx 24rpx 0 0; }
+.collection-info { padding: 16rpx; }
+.collection-period { font-size: 22rpx; color: #5F5F5D; display: block; }
+.collection-title { font-size: 26rpx; font-weight: 500; display: block; margin-top: 4rpx; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; overflow: hidden; }
+
+/* 场景宫格 */
+.scene-grid { display: flex; flex-wrap: wrap; }
+.scene-item {
+  width: 25%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 28rpx;
+}
+.scene-icon { font-size: 48rpx; margin-bottom: 8rpx; }
+.scene-name { font-size: 24rpx; color: #1C1C1C; }
+
+/* 房间 Tab */
+.room-tabs { white-space: nowrap; margin-bottom: 24rpx; }
+.room-tab {
+  display: inline-block;
+  padding: 12rpx 28rpx;
+  font-size: 26rpx;
+  color: #5F5F5D;
+  border-bottom: 4rpx solid transparent;
+  margin-right: 8rpx;
+}
+.room-tab.active {
+  color: #1C1C1C;
+  font-weight: 600;
+  border-bottom-color: #1C1C1C;
+}
+
+/* 好物瀑布流 */
+.goods-grid { display: flex; flex-wrap: wrap; justify-content: space-between; }
+.goods-grid-item { width: 48.5%; }
+
+/* 排序 Tab */
+.sort-tabs { white-space: nowrap; margin-bottom: 24rpx; }
+.sort-tab {
+  display: inline-block;
+  padding: 10rpx 24rpx;
+  font-size: 24rpx;
+  color: #5F5F5D;
+  background: rgba(28,28,28,0.04);
+  border-radius: 9999rpx;
+  margin-right: 16rpx;
+}
+.sort-tab.active { background: #1C1C1C; color: #FCFBF8; }
+
+/* 加载 */
+.loading-more { text-align: center; padding: 32rpx; color: #5F5F5D; font-size: 24rpx; }
+
+/* 管理员 FAB */
+.fab-btn {
+  position: fixed;
+  right: 40rpx;
+  bottom: 200rpx;
+  width: 100rpx;
+  height: 100rpx;
+  background: #1C1C1C;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8rpx 32rpx rgba(0,0,0,0.15);
+  z-index: 999;
+}
+.fab-icon { color: #FCFBF8; font-size: 48rpx; font-weight: 300; }

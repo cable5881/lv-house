@@ -1,0 +1,18 @@
+<view class="collection-page">
+  <view class="collection-header" wx:if="{{collection}}">
+    <image class="header-cover" src="{{collection.coverImage}}" mode="aspectFill" />
+    <view class="header-info">
+      <text class="header-period">📕 {{collection.periodLabel}}</text>
+      <text class="header-title">{{collection.title}}</text>
+      <text class="header-desc" wx:if="{{collection.description}}">{{collection.description}}</text>
+    </view>
+  </view>
+  <view class="page-container">
+    <view class="goods-grid">
+      <view class="goods-grid-item" wx:for="{{goods}}" wx:key="_id">
+        <goods-card goods="{{item}}" />
+      </view>
+    </view>
+    <empty-state wx:if="{{!goods.length && !loading}}" text="本期暂无好物" />
+  </view>
+</view>
