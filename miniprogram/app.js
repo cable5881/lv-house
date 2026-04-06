@@ -12,6 +12,7 @@ App({
       return;
     }
     wx.cloud.init({
+      env: 'cloud1-6gbtoy1t1b55d362',
       traceUser: true
     });
 
