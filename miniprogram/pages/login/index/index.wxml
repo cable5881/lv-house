@@ -1,5 +1,28 @@
 <view class="login-page">
-  <text class="login-title">小吕孩的出租屋</text>
-  <text class="login-subtitle">发现租房好物</text>
-  <button class="btn-primary login-btn" bindtap="doLogin">微信登录</button>
+  <view class="login-header">
+    <text class="login-title">小吕孩的出租屋</text>
+    <text class="login-subtitle">发现租房好物</text>
+  </view>
+
+  <view class="login-form card">
+    <!-- 头像选择 -->
+    <view class="form-group avatar-group">
+      <button class="avatar-btn" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">
+        <image class="login-avatar" src="{{avatarUrl || '/images/default-avatar.svg'}}" />
+      </button>
+      <text class="avatar-hint">点击选择头像</text>
+    </view>
+
+    <!-- 昵称输入 -->
+    <view class="form-group nickname-group">
+      <text class="form-label">昵称</text>
+      <input type="nickname" class="form-input nickname-input" placeholder="请输入昵称" value="{{nickName}}" bindinput="onNickNameInput" bindblur="onNickNameBlur" />
+    </view>
+  </view>
+
+  <button class="btn-primary login-btn" bindtap="doLogin">确认登录</button>
+
+  <view class="login-skip" bindtap="skipLogin">
+    <text>暂不登录，随便看看</text>
+  </view>
 </view>

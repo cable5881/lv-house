@@ -41,5 +41,5 @@
   "simulatorType": "wechat",
   "condition": {},
   "editorSetting": {},
-  "cloudfunctionTemplateRoot": ""
+  "cloudfunctionTemplateRoot": "cloudfunctionTemplate/"
 }

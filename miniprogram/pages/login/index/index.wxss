@@ -1,4 +1,106 @@
-.login-page { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 80vh; padding: 64rpx; }
-.login-title { font-size: 48rpx; font-weight: 600; margin-bottom: 16rpx; }
-.login-subtitle { font-size: 28rpx; color: #5F5F5D; margin-bottom: 80rpx; }
-.login-btn { width: 80%; }
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60rpx 40rpx;
+  background-color: var(--color-bg);
+}
+
+.login-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 80rpx;
+}
+
+.login-title {
+  font-size: 48rpx;
+  font-weight: bold;
+  color: var(--color-text-primary);
+  margin-bottom: 16rpx;
+}
+
+.login-subtitle {
+  font-size: 28rpx;
+  color: var(--color-text-secondary);
+}
+
+.login-form {
+  width: 100%;
+  padding: 48rpx 40rpx;
+  margin-bottom: 60rpx;
+}
+
+.avatar-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 40rpx;
+}
+
+.avatar-btn {
+  width: 160rpx;
+  height: 160rpx;
+  padding: 0;
+  margin: 0;
+  border: none;
+  background: transparent;
+  border-radius: 50%;
+  overflow: hidden;
+  line-height: normal;
+}
+
+.avatar-btn::after {
+  border: none;
+}
+
+.login-avatar {
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 50%;
+  border: 4rpx solid var(--color-border);
+}
+
+.avatar-hint {
+  font-size: 24rpx;
+  color: var(--color-text-tertiary);
+  margin-top: 16rpx;
+}
+
+.nickname-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-label {
+  font-size: 28rpx;
+  color: var(--color-text-secondary);
+  margin-bottom: 12rpx;
+}
+
+.nickname-input {
+  height: 80rpx;
+  padding: 0 24rpx;
+  border: 2rpx solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: 30rpx;
+  color: var(--color-text-primary);
+  background-color: #fff;
+}
+
+.login-btn {
+  width: 100%;
+  margin-bottom: 32rpx;
+}
+
+.login-skip {
+  padding: 20rpx;
+}
+
+.login-skip text {
+  font-size: 26rpx;
+  color: var(--color-text-tertiary);
+  text-decoration: underline;
+}

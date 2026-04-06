@@ -1,6 +1,6 @@
 <view class="mine-page">
   <!-- 未登录 -->
-  <view class="profile-card card" wx:if="{{!isLoggedIn}}" bindtap="doLogin">
+  <view class="profile-card card" wx:if="{{!isLoggedIn}}" bindtap="goLogin">
     <image class="avatar avatar-default" src="/images/default-avatar.svg" />
     <text class="login-hint">点击登录</text>
   </view>

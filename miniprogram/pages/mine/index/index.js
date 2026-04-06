@@ -34,17 +34,8 @@ Page({
     this.setData({ isLoggedIn, userInfo, isAdmin, genderText });
   },
 
-  async doLogin() {
-    try {
-      // 使用微信头像昵称获取能力
-      wx.showLoading({ title: '登录中' });
-      await authUtil.doLogin();
-      this.refreshState();
-      wx.showToast({ title: '登录成功', icon: 'success' });
-    } catch (err) {
-      wx.showToast({ title: '登录失败', icon: 'none' });
-    }
-    wx.hideLoading();
+  goLogin() {
+    wx.navigateTo({ url: '/pages/login/index/index' });
   },
 
   doLogout() {
@@ -84,7 +75,6 @@ Page({
     wx.showLoading({ title: '保存中' });
     try {
       await api.updateUserInfo({ birthday, gender });
-      // 更新本地缓存
       const app = getApp();
       app.globalData.userInfo.birthday = birthday;
       app.globalData.userInfo.gender = gender;
