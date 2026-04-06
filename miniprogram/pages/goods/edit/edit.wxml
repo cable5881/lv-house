@@ -68,7 +68,7 @@
     </picker>
   </view>
 
-  <!-- 维度归类 -->
+  <!-- 小红书集合 -->
   <view class="form-group">
     <text class="form-label">小红书集合（可多选）</text>
     <view class="checkbox-group">
@@ -77,9 +77,11 @@
         bindtap="toggleDimension" data-field="collectionIds" data-id="{{item._id}}">
         {{item.periodLabel || item.title}}
       </view>
+      <view class="add-dimension-btn" bindtap="addDimension" data-type="collections" data-label="集合">+ 新增集合</view>
     </view>
   </view>
 
+  <!-- 场景 -->
   <view class="form-group">
     <text class="form-label">场景（可多选）</text>
     <view class="checkbox-group">
@@ -88,9 +90,11 @@
         bindtap="toggleDimension" data-field="sceneIds" data-id="{{item._id}}">
         {{item.icon}} {{item.name}}
       </view>
+      <view class="add-dimension-btn" bindtap="addDimension" data-type="scenes" data-label="场景">+ 新增场景</view>
     </view>
   </view>
 
+  <!-- 房间 -->
   <view class="form-group">
     <text class="form-label">房间（可多选）</text>
     <view class="checkbox-group">
@@ -99,9 +103,11 @@
         bindtap="toggleDimension" data-field="roomIds" data-id="{{item._id}}">
         {{item.icon}} {{item.name}}
       </view>
+      <view class="add-dimension-btn" bindtap="addDimension" data-type="rooms" data-label="房间">+ 新增房间</view>
     </view>
   </view>
 
+  <!-- 标签 -->
   <view class="form-group">
     <text class="form-label">标签（可多选）</text>
     <view class="checkbox-group">
@@ -110,6 +116,7 @@
         bindtap="toggleDimension" data-field="tagIds" data-id="{{item._id}}">
         {{item.name}}
       </view>
+      <view class="add-dimension-btn" bindtap="addDimension" data-type="tags" data-label="标签">+ 新增标签</view>
     </view>
   </view>
 
@@ -123,4 +130,17 @@
   </view>
 
   <view style="height: 60rpx;"></view>
+
+  <!-- 新增维度弹窗 -->
+  <view class="modal-overlay" wx:if="{{showAddModal}}" bindtap="closeAddModal">
+    <view class="modal-box" catchtap="">
+      <text class="modal-title">新增{{addModalLabel}}</text>
+      <input class="modal-input" placeholder="请输入名称" value="{{addModalName}}" bindinput="onModalNameInput" />
+      <input class="modal-input" placeholder="图标(emoji,可选) 如🎄" value="{{addModalIcon}}" bindinput="onModalIconInput" wx:if="{{addModalType !== 'tags' && addModalType !== 'collections'}}" />
+      <view class="modal-btns">
+        <button class="btn-ghost" bindtap="closeAddModal">取消</button>
+        <button class="btn-primary" bindtap="confirmAddDimension">确定</button>
+      </view>
+    </view>
+  </view>
 </view>

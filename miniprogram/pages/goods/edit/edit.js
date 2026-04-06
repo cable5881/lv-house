@@ -18,7 +18,13 @@ Page({
       { value: 'other', label: '其他' }
     ],
     platformIndex: 0,
-    allCollections: [], allScenes: [], allRooms: [], allTags: []
+    allCollections: [], allScenes: [], allRooms: [], allTags: [],
+    // 新增维度弹窗
+    showAddModal: false,
+    addModalType: '',
+    addModalLabel: '',
+    addModalName: '',
+    addModalIcon: ''
   },
 
   onLoad(options) {
@@ -27,9 +33,7 @@ Page({
       wx.navigateBack();
       return;
     }
-    // 设置默认上架时间为今天
     this.setData({ 'form.shelfTime': formatDate(new Date()) });
-
     this.loadDimensions();
 
     if (options.id) {
@@ -41,14 +45,22 @@ Page({
 
   async loadDimensions() {
     try {
-      const [allCollections, allScenes, allRooms, allTags] = await Promise.all([
+      const [collections, scenes, rooms, tags] = await Promise.all([
         api.getCollections().catch(() => []),
         api.getScenes().catch(() => []),
         api.getRooms().catch(() => []),
         api.getTags().catch(() => [])
       ]);
-      this.setData({ allCollections, allScenes, allRooms, allTags });
-    } catch (err) {}
+      // 云函数返回的可能是数组或 {list: []}
+      this.setData({
+        allCollections: Array.isArray(collections) ? collections : (collections.list || []),
+        allScenes: Array.isArray(scenes) ? scenes : (scenes.list || []),
+        allRooms: Array.isArray(rooms) ? rooms : (rooms.list || []),
+        allTags: Array.isArray(tags) ? tags : (tags.list || [])
+      });
+    } catch (err) {
+      console.error('loadDimensions error', err);
+    }
   },
 
   async loadGoods(id) {
@@ -101,6 +113,71 @@ Page({
     this.setData({ ['form.' + field]: arr });
   },
 
+  // ===== 新增维度弹窗 =====
+  addDimension(e) {
+    const { type, label } = e.currentTarget.dataset;
+    this.setData({
+      showAddModal: true,
+      addModalType: type,
+      addModalLabel: label,
+      addModalName: '',
+      addModalIcon: ''
+    });
+  },
+
+  closeAddModal() {
+    this.setData({ showAddModal: false });
+  },
+
+  onModalNameInput(e) { this.setData({ addModalName: e.detail.value }); },
+  onModalIconInput(e) { this.setData({ addModalIcon: e.detail.value }); },
+
+  async confirmAddDimension() {
+    const { addModalType, addModalName, addModalIcon } = this.data;
+    if (!addModalName.trim()) {
+      wx.showToast({ title: '请输入名称', icon: 'none' });
+      return;
+    }
+
+    wx.showLoading({ title: '添加中' });
+    try {
+      const db = wx.cloud.database();
+      let newDoc = { createdAt: db.serverDate() };
+
+      if (addModalType === 'collections') {
+        newDoc.title = addModalName.trim();
+        newDoc.periodLabel = addModalName.trim();
+      } else if (addModalType === 'tags') {
+        newDoc.name = addModalName.trim();
+      } else {
+        newDoc.name = addModalName.trim();
+        newDoc.icon = addModalIcon.trim() || '';
+      }
+
+      const res = await db.collection(addModalType).add({ data: newDoc });
+      newDoc._id = res._id;
+
+      // 添加到本地列表
+      const fieldMap = {
+        collections: 'allCollections',
+        scenes: 'allScenes',
+        rooms: 'allRooms',
+        tags: 'allTags'
+      };
+      const listField = fieldMap[addModalType];
+      const list = [...this.data[listField], newDoc];
+      this.setData({ [listField]: list, showAddModal: false });
+
+      wx.hideLoading();
+      wx.showToast({ title: '添加成功', icon: 'success' });
+    } catch (err) {
+      wx.hideLoading();
+      console.error('添加维度失败', err);
+      wx.showToast({ title: '添加失败', icon: 'none' });
+    }
+  },
+
+  // ===== 图片上传 =====
   chooseImage() {
     const remain = 9 - this.data.form.images.length;
     wx.chooseMedia({
@@ -138,8 +215,9 @@ Page({
     this.setData({ 'form.images': images });
   },
 
+  // ===== 保存 =====
   validate() {
-    const { name, description, images, price, purchaseLink, rating, shelfTime } = this.data.form;
+    const { name, description, images, price, purchaseLink, shelfTime } = this.data.form;
     if (!name.trim()) return '请输入好物名称';
     if (!images.length) return '请上传至少一张图片';
     if (!description.trim()) return '请输入好物描述';
@@ -149,9 +227,7 @@ Page({
     return null;
   },
 
-  async saveDraft() {
-    await this.doSave('draft');
-  },
+  async saveDraft() { await this.doSave('draft'); },
 
   async publish() {
     const err = this.validate();
