@@ -1,14 +1,16 @@
 .edit-page { padding-top: 20rpx; padding-bottom: 40rpx; }
 .form-group { margin-bottom: 36rpx; }
-.form-label { font-size: 26rpx; font-weight: 500; color: #1C1C1C; margin-bottom: 12rpx; display: block; }
+.form-label { font-size: 28rpx; font-weight: 500; color: #1C1C1C; margin-bottom: 12rpx; display: block; }
 .form-input {
   background: #FFFFFF;
   border: 2rpx solid #ECEAE4;
   border-radius: 12rpx;
-  padding: 20rpx 24rpx;
+  padding: 0 24rpx;
   font-size: 28rpx;
   color: #1C1C1C;
   width: 100%;
+  height: 80rpx;
+  line-height: 80rpx;
   box-sizing: border-box;
 }
 .form-textarea {
@@ -20,9 +22,20 @@
   color: #1C1C1C;
   width: 100%;
   min-height: 200rpx;
+  line-height: 1.6;
   box-sizing: border-box;
 }
-.picker-value { color: #1C1C1C; }
+.picker-value {
+  color: #1C1C1C;
+  height: 80rpx;
+  line-height: 80rpx;
+  padding: 0 24rpx;
+  background: #FFFFFF;
+  border: 2rpx solid #ECEAE4;
+  border-radius: 12rpx;
+  font-size: 28rpx;
+  box-sizing: border-box;
+}
 
 /* 图片 */
 .image-grid { display: flex; flex-wrap: wrap; }
@@ -37,10 +50,9 @@
 
 /* 多选 */
 .checkbox-group { display: flex; flex-wrap: wrap; }
-.checkbox-item { padding: 10rpx 24rpx; border-radius: 9999rpx; background: #FFFFFF; border: 2rpx solid #ECEAE4; font-size: 24rpx; color: #5F5F5D; margin-right: 16rpx; margin-bottom: 12rpx; }
+.checkbox-item { padding: 12rpx 28rpx; border-radius: 9999rpx; background: #FFFFFF; border: 2rpx solid #ECEAE4; font-size: 26rpx; color: #5F5F5D; margin-right: 16rpx; margin-bottom: 12rpx; line-height: 1.4; }
 .checkbox-item.checked { background: #1C1C1C; color: #FCFBF8; border-color: #1C1C1C; }
-.empty-dimension { font-size: 24rpx; color: #999; padding: 12rpx 0; }
-.add-dimension-btn { display: inline-flex; align-items: center; padding: 10rpx 24rpx; border-radius: 9999rpx; background: #FFFFFF; border: 2rpx dashed #ECEAE4; font-size: 24rpx; color: #5F5F5D; margin-bottom: 12rpx; }
+.add-dimension-btn { display: inline-flex; align-items: center; padding: 12rpx 28rpx; border-radius: 9999rpx; background: #FFFFFF; border: 2rpx dashed #ECEAE4; font-size: 26rpx; color: #5F5F5D; margin-bottom: 12rpx; line-height: 1.4; }
 
 /* 按钮 */
 .btn-group { display: flex; margin-top: 48rpx; }
@@ -52,6 +64,18 @@
 .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 999; }
 .modal-box { background: #fff; border-radius: 24rpx; padding: 48rpx 40rpx; width: 80%; }
 .modal-title { font-size: 32rpx; font-weight: bold; color: #1C1C1C; margin-bottom: 32rpx; display: block; text-align: center; }
-.modal-input { background: #F7F4ED; border: 2rpx solid #ECEAE4; border-radius: 12rpx; padding: 20rpx 24rpx; font-size: 28rpx; color: #1C1C1C; width: 100%; box-sizing: border-box; margin-bottom: 20rpx; }
+.modal-input {
+  background: #F7F4ED;
+  border: 2rpx solid #ECEAE4;
+  border-radius: 12rpx;
+  padding: 0 24rpx;
+  font-size: 28rpx;
+  color: #1C1C1C;
+  width: 100%;
+  height: 80rpx;
+  line-height: 80rpx;
+  box-sizing: border-box;
+  margin-bottom: 20rpx;
+}
 .modal-btns { display: flex; margin-top: 24rpx; }
 .modal-btns button { flex: 1; margin: 0 8rpx; }
