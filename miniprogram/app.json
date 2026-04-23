@@ -7,11 +7,12 @@
     "pages/goods/edit/edit",
     "pages/goods/search/search",
     "pages/mine/index/index",
+    "pages/notice/index/index",
     "pages/login/index/index"
   ],
   "window": {
     "navigationBarTextStyle": "black",
-    "navigationBarTitleText": "小吕孩的出租屋",
+    "navigationBarTitleText": "租房好物推荐LAB",
     "navigationBarBackgroundColor": "#F7F4ED",
     "backgroundColor": "#F7F4ED"
   },

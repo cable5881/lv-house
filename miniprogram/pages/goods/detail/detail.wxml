@@ -22,6 +22,14 @@
       <text class="tag-pill" wx:for="{{goods.tagNames}}" wx:key="*this">{{item}}</text>
     </view>
     <text class="shelf-time text-secondary">上架时间：{{shelfTimeText}}</text>
+    <view class="quick-actions">
+      <view class="quick-action" bindtap="openPoster">
+        <text>🖼️ 生成海报</text>
+      </view>
+      <view class="quick-action" bindtap="copyLink">
+        <text>🔗 复制链接</text>
+      </view>
+    </view>
   </view>
 
   <!-- 好物描述 -->
@@ -46,6 +54,78 @@
     </view>
   </view>
 
+  <!-- 评论区 -->
+  <view class="comment-section">
+    <view class="section-header">
+      <text class="section-title">评论区</text>
+      <text class="comment-count">{{comments.length}} 条主评论</text>
+    </view>
+
+    <view class="comment-composer card">
+      <view class="reply-hint" wx:if="{{replyTo}}">
+        <text>回复 {{replyTo.name}}</text>
+        <text class="reply-clear" bindtap="clearReply">取消</text>
+      </view>
+      <textarea
+        class="comment-textarea"
+        auto-height
+        maxlength="300"
+        placeholder="{{replyTo ? '输入回复内容' : '写下你的使用感受吧'}}"
+        value="{{commentContent}}"
+        bindinput="onCommentInput"
+        bindtap="focusComment"
+      />
+      <view class="comment-submit-row">
+        <text class="comment-tip">文明评论，最多 300 字</text>
+        <button class="btn-primary comment-submit-btn" size="mini" loading="{{commentSubmitting}}" bindtap="submitComment">发布</button>
+      </view>
+    </view>
+
+    <empty-state wx:if="{{!comments.length && !commentsLoading}}" text="还没有评论，来抢沙发吧" />
+
+    <view class="comment-list" wx:if="{{comments.length}}">
+      <view class="comment-card" wx:for="{{comments}}" wx:key="_id">
+        <view class="comment-head">
+          <image class="comment-avatar" src="{{item.userSnapshot.avatarUrl || '/images/default-avatar.svg'}}" />
+          <view class="comment-user">
+            <text class="comment-name">{{item.userSnapshot.nickName || '用户'}}</text>
+            <text class="comment-time">{{item.displayDate}}</text>
+          </view>
+        </view>
+        <text class="comment-content {{item.isDeleted ? 'is-muted' : ''}}">{{item.content}}</text>
+        <view class="comment-actions">
+          <text class="comment-action" wx:if="{{!item.isDeleted}}" bindtap="replyComment" data-id="{{item._id}}" data-name="{{item.userSnapshot.nickName || '用户'}}">回复</text>
+          <text class="comment-action comment-delete" wx:if="{{item.canDelete && !item.isDeleted}}" bindtap="deleteComment" data-id="{{item._id}}">删除</text>
+        </view>
+
+        <view class="reply-list" wx:if="{{item.replies.length}}">
+          <view class="reply-card" wx:for="{{item.replies}}" wx:key="_id">
+            <view class="comment-head">
+              <image class="comment-avatar is-small" src="{{item.userSnapshot.avatarUrl || '/images/default-avatar.svg'}}" />
+              <view class="comment-user">
+                <text class="comment-name">{{item.userSnapshot.nickName || '用户'}}</text>
+                <text class="comment-time">{{item.displayDate}}</text>
+              </view>
+            </view>
+            <text class="reply-target" wx:if="{{item.replyToSnapshot.nickName}}">回复 {{item.replyToSnapshot.nickName}}</text>
+            <text class="comment-content {{item.isDeleted ? 'is-muted' : ''}}">{{item.content}}</text>
+            <view class="comment-actions">
+              <text class="comment-action" wx:if="{{!item.isDeleted}}" bindtap="replyComment" data-id="{{item._id}}" data-name="{{item.userSnapshot.nickName || '用户'}}">回复</text>
+              <text class="comment-action comment-delete" wx:if="{{item.canDelete && !item.isDeleted}}" bindtap="deleteComment" data-id="{{item._id}}">删除</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="loading-more" wx:if="{{commentsLoading}}">
+      <text>评论加载中...</text>
+    </view>
+    <view class="comment-more" wx:if="{{commentsHasMore && !commentsLoading}}" bindtap="loadMoreComments">
+      <text>查看更多评论</text>
+    </view>
+  </view>
+
   <!-- 相关推荐 -->
   <view class="related-section" wx:if="{{relatedGoods.length}}">
     <text class="section-title">看了又看</text>
@@ -60,6 +140,30 @@
   <view style="height: 140rpx;"></view>
 </view>
 
+<!-- 海报隐藏画布 -->
+<canvas canvas-id="posterCanvas" class="poster-canvas"></canvas>
+
+<!-- 海报预览弹层 -->
+<view class="poster-overlay" wx:if="{{posterVisible}}" bindtap="closePoster">
+  <view class="poster-panel" catchtap="">
+    <text class="poster-title">分享海报</text>
+    <view class="poster-loading" wx:if="{{posterLoading}}">
+      <text>海报生成中...</text>
+    </view>
+    <image
+      wx:if="{{posterTempFilePath && !posterLoading}}"
+      class="poster-preview"
+      src="{{posterTempFilePath}}"
+      mode="aspectFit"
+      bindtap="previewPoster"
+    />
+    <view class="poster-actions" wx:if="{{posterTempFilePath && !posterLoading}}">
+      <button class="btn-ghost" bindtap="closePoster">关闭</button>
+      <button class="btn-primary" bindtap="savePoster">保存到相册</button>
+    </view>
+  </view>
+</view>
+
 <!-- 底部操作栏 -->
 <view class="bottom-bar">
   <view class="bar-btn edit-btn" wx:if="{{isAdmin}}" bindtap="goEdit">
@@ -70,9 +174,6 @@
       <text class="btn-icon">{{goods.isFavorited ? '❤️' : '🤍'}}</text>
       <text>{{goods.isFavorited ? '已收藏' : '收藏'}}</text>
     </text>
-  </view>
-  <view class="bar-btn copy-btn" bindtap="copyLink">
-    <text>🔗 复制链接</text>
   </view>
   <view class="bar-btn buy-btn" bindtap="goBuy">
     <text>🛒 去购买</text>

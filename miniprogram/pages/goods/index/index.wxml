@@ -1,4 +1,10 @@
 <view class="page-container">
+  <view
+    class="manage-mask"
+    wx:if="{{isAdmin && (manageCollections || manageScenes || manageRooms) && !dimEditorVisible}}"
+    bindtap="exitManageMode"
+  ></view>
+
   <!-- 搜索栏 -->
   <view class="search-bar" bindtap="goSearch">
     <text class="search-icon">🔍</text>
@@ -9,40 +15,82 @@
   <view class="section" wx:if="{{collections.length}}">
     <view class="section-header">
       <text class="section-title">📕 小红书精选</text>
-      <text class="view-all" bindtap="goCollectionList">查看全部 ></text>
+      <text class="view-all" wx:if="{{isAdmin && manageCollections}}" bindtap="exitManageCollections">完成</text>
+      <text class="view-all" wx:else bindtap="goCollectionList">查看全部 ></text>
     </view>
     <scroll-view scroll-x class="collection-scroll" enhanced show-scrollbar="{{false}}">
-      <view class="collection-item card" wx:for="{{collections}}" wx:key="_id" bindtap="goCollection" data-id="{{item._id}}">
-        <image class="collection-cover" src="{{item.coverImage}}" mode="aspectFill" />
+      <view
+        class="collection-item card {{manageCollections ? 'is-manage' : ''}}"
+        wx:for="{{collections}}" wx:key="_id"
+        bindtap="goCollection" bindlongpress="enterManageCollections"
+        data-id="{{item._id}}"
+      >
+        <image class="collection-cover" src="{{item.coverImage || '/images/placeholder.svg'}}" mode="aspectFill" />
         <view class="collection-info">
           <text class="collection-period">{{item.periodLabel}}</text>
           <text class="collection-title">{{item.title}}</text>
         </view>
+        <view class="dim-actions" wx:if="{{isAdmin && manageCollections}}" catchtap="noop">
+          <view class="dim-action dim-edit" bindtap="onEditDim" data-type="collections" data-id="{{item._id}}">✏️</view>
+          <view class="dim-action dim-del" bindtap="onDeleteDim" data-type="collections" data-id="{{item._id}}">🗑️</view>
+        </view>
       </view>
     </scroll-view>
+    <text class="manage-hint" wx:if="{{isAdmin && !manageCollections}}">长按卡片可编辑/删除</text>
   </view>
 
   <!-- 按场景逛 -->
   <view class="section" wx:if="{{scenes.length}}">
-    <text class="section-title">🎯 按场景逛</text>
+    <view class="section-header">
+      <text class="section-title">🎯 按场景逛</text>
+      <text class="view-all" wx:if="{{isAdmin && manageScenes}}" bindtap="exitManageScenes">完成</text>
+    </view>
     <view class="scene-grid">
-      <view class="scene-item" wx:for="{{scenes}}" wx:key="_id" bindtap="goSceneList" data-id="{{item._id}}" data-name="{{item.name}}">
-        <text class="scene-icon">{{item.icon}}</text>
-        <text class="scene-name">{{item.name}}</text>
+      <view
+        class="scene-item {{manageScenes ? 'is-manage' : ''}}"
+        wx:for="{{scenes}}" wx:key="_id"
+        bindtap="goSceneList" bindlongpress="enterManageScenes"
+        data-id="{{item._id}}" data-name="{{item.name}}"
+      >
+        <image class="scene-cover" wx:if="{{item.coverImage}}" src="{{item.coverImage}}" mode="aspectFill" />
+        <view class="scene-overlay" wx:if="{{item.coverImage}}">
+          <text class="scene-icon">{{item.icon}}</text>
+          <text class="scene-name scene-name--light">{{item.name}}</text>
+        </view>
+        <block wx:else>
+          <text class="scene-icon">{{item.icon}}</text>
+          <text class="scene-name">{{item.name}}</text>
+        </block>
+        <view class="dim-actions dim-actions--small" wx:if="{{isAdmin && manageScenes}}" catchtap="noop">
+          <view class="dim-action dim-edit" bindtap="onEditDim" data-type="scenes" data-id="{{item._id}}">✏️</view>
+          <view class="dim-action dim-del" bindtap="onDeleteDim" data-type="scenes" data-id="{{item._id}}">🗑️</view>
+        </view>
       </view>
     </view>
+    <text class="manage-hint" wx:if="{{isAdmin && !manageScenes}}">长按场景可编辑/删除</text>
   </view>
 
   <!-- 按房间逛 -->
   <view class="section" wx:if="{{rooms.length}}">
-    <text class="section-title">🏠 按房间逛</text>
+    <view class="section-header">
+      <text class="section-title">🏠 按房间逛</text>
+      <text class="view-all" wx:if="{{isAdmin && manageRooms}}" bindtap="exitManageRooms">完成</text>
+    </view>
     <scroll-view scroll-x class="room-tabs" enhanced show-scrollbar="{{false}}">
       <view
-        class="room-tab {{activeRoomId === item._id ? 'active' : ''}}"
+        class="room-tab {{activeRoomId === item._id ? 'active' : ''}} {{manageRooms ? 'is-manage' : ''}}"
         wx:for="{{rooms}}" wx:key="_id"
-        bindtap="switchRoom" data-id="{{item._id}}"
+        bindtap="switchRoom" bindlongpress="enterManageRooms"
+        data-id="{{item._id}}"
       >
-        <text>{{item.icon}} {{item.name}}</text>
+        <view class="room-tab-content">
+          <image class="room-tab-cover" wx:if="{{item.coverImage}}" src="{{item.coverImage}}" mode="aspectFill" />
+          <text>{{item.icon}} {{item.name}}</text>
+          <view class="dim-actions-inline" wx:if="{{isAdmin && manageRooms}}" catchtap="noop">
+            <text class="dim-action-inline" bindtap="onEditDim" data-type="rooms" data-id="{{item._id}}">✏️</text>
+            <text class="dim-action-inline" bindtap="onDeleteDim" data-type="rooms" data-id="{{item._id}}">🗑️</text>
+          </view>
+        </view>
       </view>
     </scroll-view>
     <view class="goods-grid">
@@ -51,6 +99,7 @@
       </view>
     </view>
     <empty-state wx:if="{{!roomGoods.length && !loading}}" text="该房间暂无好物" />
+    <text class="manage-hint" wx:if="{{isAdmin && !manageRooms}}">长按房间可编辑/删除</text>
   </view>
 
   <!-- 编辑推荐 -->
@@ -87,5 +136,34 @@
   <!-- 管理员悬浮按钮 -->
   <view class="fab-btn" wx:if="{{isAdmin}}" bindtap="goAddGoods">
     <text class="fab-icon">+</text>
+  </view>
+</view>
+
+<!-- 维度编辑弹窗（管理员） -->
+<view class="edit-overlay" wx:if="{{dimEditorVisible}}" bindtap="closeDimEditor">
+  <view class="edit-panel" catchtap="noop">
+    <text class="edit-title">
+      编辑{{dimEditorType === 'collections' ? '小红书集合' : (dimEditorType === 'scenes' ? '场景' : '房间')}}
+    </text>
+
+    <view class="form-group">
+      <text class="form-label">名称</text>
+      <input class="form-input" value="{{dimEditorName}}" placeholder="请输入名称" bindinput="onDimNameInput" />
+    </view>
+
+    <view class="form-group" wx:if="{{dimEditorType !== 'collections'}}">
+      <text class="form-label">图标（可填 emoji）</text>
+      <input class="form-input" value="{{dimEditorIcon}}" placeholder="例如：🏠 🎯" bindinput="onDimIconInput" />
+    </view>
+
+    <view class="form-group" wx:if="{{dimEditorType === 'collections' || dimEditorType === 'scenes' || dimEditorType === 'rooms'}}">
+      <text class="form-label">封面图</text>
+      <image class="cover-preview" src="{{dimEditorCoverImage || '/images/placeholder.svg'}}" mode="aspectFill" />
+      <view class="cover-actions">
+        <button class="btn-ghost" size="mini" bindtap="chooseDimCover">选择封面</button>
+      </view>
+    </view>
+
+    <button class="btn-primary" loading="{{dimSaving}}" bindtap="saveDimEdit">保存</button>
   </view>
 </view>

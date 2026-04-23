@@ -14,6 +14,16 @@
 .meta-text { font-size: 24rpx; color: #5F5F5D; }
 .tags-row { margin-bottom: 16rpx; display: flex; flex-wrap: wrap; }
 .shelf-time { display: block; }
+.quick-actions { display: flex; gap: 16rpx; margin-top: 24rpx; }
+.quick-action {
+  flex: 1;
+  background: rgba(28,28,28,0.04);
+  border: 1px solid #ECEAE4;
+  border-radius: 16rpx;
+  padding: 20rpx 0;
+  text-align: center;
+  font-size: 26rpx;
+}
 
 /* 描述 */
 .desc-section { padding: 32rpx; margin-top: 16rpx; background: #fff; }
@@ -25,10 +35,147 @@
 .dim-label { font-size: 24rpx; color: #5F5F5D; margin-right: 16rpx; }
 .dim-value { font-size: 24rpx; color: #1C1C1C; margin-right: 16rpx; }
 
+/* 评论 */
+.comment-section { padding: 32rpx; margin-top: 16rpx; background: #fff; }
+.comment-count { font-size: 24rpx; color: #5F5F5D; }
+.comment-composer { margin-top: 20rpx; padding: 24rpx; }
+.reply-hint {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16rpx;
+  font-size: 24rpx;
+  color: #5F5F5D;
+}
+.reply-clear { color: #E85D5D; }
+.comment-textarea {
+  width: 100%;
+  min-height: 140rpx;
+  background: rgba(28,28,28,0.04);
+  border: 1px solid #ECEAE4;
+  border-radius: 16rpx;
+  padding: 20rpx 24rpx;
+  box-sizing: border-box;
+  font-size: 28rpx;
+}
+.comment-submit-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 16rpx;
+}
+.comment-tip { font-size: 22rpx; color: #5F5F5D; }
+.comment-submit-btn { margin: 0; }
+.comment-card {
+  padding: 24rpx 0;
+  border-bottom: 1px solid #ECEAE4;
+}
+.comment-card:last-child { border-bottom: none; }
+.comment-head { display: flex; align-items: center; margin-bottom: 16rpx; }
+.comment-avatar {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 9999rpx;
+  border: 1px solid #ECEAE4;
+  margin-right: 18rpx;
+}
+.comment-avatar.is-small {
+  width: 56rpx;
+  height: 56rpx;
+}
+.comment-user { display: flex; flex-direction: column; }
+.comment-name { font-size: 26rpx; font-weight: 500; color: #1C1C1C; }
+.comment-time { font-size: 22rpx; color: #5F5F5D; margin-top: 4rpx; }
+.comment-content {
+  display: block;
+  font-size: 28rpx;
+  color: #1C1C1C;
+  line-height: 1.7;
+}
+.comment-content.is-muted { color: #8B8B89; }
+.comment-actions { display: flex; gap: 24rpx; margin-top: 16rpx; }
+.comment-action { font-size: 24rpx; color: #5F5F5D; }
+.comment-delete { color: #E85D5D; }
+.reply-list {
+  margin-top: 20rpx;
+  margin-left: 32rpx;
+  padding-left: 20rpx;
+  border-left: 4rpx solid rgba(28,28,28,0.08);
+}
+.reply-card { padding: 16rpx 0; }
+.reply-target {
+  display: block;
+  font-size: 22rpx;
+  color: #5F5F5D;
+  margin-bottom: 8rpx;
+}
+.comment-more {
+  text-align: center;
+  font-size: 24rpx;
+  color: #5F5F5D;
+  padding-top: 20rpx;
+}
+
 /* 相关 */
 .related-section { padding: 32rpx; margin-top: 16rpx; background: #fff; }
 .related-scroll { white-space: nowrap; }
 .related-item { display: inline-block; width: 280rpx; margin-right: 20rpx; vertical-align: top; white-space: normal; }
+
+/* 海报 */
+.poster-canvas {
+  position: fixed;
+  left: -9999px;
+  top: -9999px;
+  width: 750px;
+  height: 1334px;
+}
+.poster-overlay {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.55);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32rpx;
+  box-sizing: border-box;
+}
+.poster-panel {
+  width: 100%;
+  background: #fff;
+  border-radius: 24rpx;
+  padding: 28rpx;
+}
+.poster-title {
+  display: block;
+  font-size: 32rpx;
+  font-weight: 600;
+  margin-bottom: 20rpx;
+}
+.poster-loading {
+  padding: 80rpx 0;
+  text-align: center;
+  color: #5F5F5D;
+  font-size: 26rpx;
+}
+.poster-preview {
+  width: 100%;
+  height: 800rpx;
+  border-radius: 20rpx;
+  background: #F7F4ED;
+}
+.poster-actions {
+  display: flex;
+  gap: 16rpx;
+  margin-top: 20rpx;
+}
+.poster-actions .btn-ghost,
+.poster-actions .btn-primary {
+  flex: 1;
+}
 
 /* 底部栏 */
 .bottom-bar {
@@ -47,5 +194,4 @@
 .edit-btn { border: 1px solid #ECEAE4; }
 .favorite-btn { border: 1px solid #ECEAE4; }
 .favorite-btn.is-active { background: rgba(232, 93, 93, 0.08); color: #E85D5D; border-color: rgba(232, 93, 93, 0.32); }
-.copy-btn { border: 1px solid #ECEAE4; }
 .buy-btn { background: #1C1C1C; color: #FCFBF8; }

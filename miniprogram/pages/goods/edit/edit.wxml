@@ -71,16 +71,29 @@
   <!-- 小红书集合 -->
   <view class="form-group">
     <text class="form-label">小红书集合（可多选）</text>
+    <text class="dimension-tip">已选会显示在上方，点 `×` 可删除；下方点选可切换。</text>
+    <view class="selected-dimension-list" wx:if="{{selectedCollections.length}}">
+      <view class="selected-dimension-chip" wx:for="{{selectedCollections}}" wx:key="_id">
+        <text class="selected-dimension-name">✓ {{item.periodLabel || item.title}}</text>
+        <text class="selected-dimension-remove" bindtap="removeSelectedDimension" data-field="collectionIds" data-id="{{item._id}}">×</text>
+      </view>
+    </view>
+    <empty-state wx:if="{{!selectedCollections.length}}" text="还未选择集合" />
     <view class="checkbox-group">
       <view class="checkbox-item {{form.collectionIds.indexOf(item._id) >= 0 ? 'checked' : ''}}"
         wx:for="{{allCollections}}" wx:key="_id"
         bindtap="toggleDimension" data-field="collectionIds" data-id="{{item._id}}">
-        {{item.periodLabel || item.title}}
+        <text class="checkbox-check">{{form.collectionIds.indexOf(item._id) >= 0 ? '✓' : '+'}}</text>
+        <text>{{item.periodLabel || item.title}}</text>
       </view>
       <view class="add-dimension-btn" bindtap="toggleInlineAdd" data-type="collections" wx:if="{{inlineAddType !== 'collections'}}">+ 新增集合</view>
     </view>
     <view class="inline-add-row" wx:if="{{inlineAddType === 'collections'}}">
       <input class="inline-add-input" placeholder="输入集合名称" value="{{inlineAddName}}" bindinput="onInlineNameInput" focus="{{inlineAddType === 'collections'}}" />
+      <view class="inline-cover-group">
+        <image class="inline-cover-preview" src="{{inlineAddCoverImage || '/images/placeholder.svg'}}" mode="aspectFill" />
+        <view class="inline-cover-btn" bindtap="chooseInlineDimCover">封面</view>
+      </view>
       <view class="inline-add-confirm" bindtap="confirmInlineAdd">确定</view>
       <view class="inline-add-cancel" bindtap="cancelInlineAdd">取消</view>
     </view>
@@ -89,17 +102,30 @@
   <!-- 场景 -->
   <view class="form-group">
     <text class="form-label">场景（可多选）</text>
+    <text class="dimension-tip">已选会显示在上方，点 `×` 可删除；下方点选可切换。</text>
+    <view class="selected-dimension-list" wx:if="{{selectedScenes.length}}">
+      <view class="selected-dimension-chip" wx:for="{{selectedScenes}}" wx:key="_id">
+        <text class="selected-dimension-name">✓ {{item.icon}} {{item.name}}</text>
+        <text class="selected-dimension-remove" bindtap="removeSelectedDimension" data-field="sceneIds" data-id="{{item._id}}">×</text>
+      </view>
+    </view>
+    <empty-state wx:if="{{!selectedScenes.length}}" text="还未选择场景" />
     <view class="checkbox-group">
       <view class="checkbox-item {{form.sceneIds.indexOf(item._id) >= 0 ? 'checked' : ''}}"
         wx:for="{{allScenes}}" wx:key="_id"
         bindtap="toggleDimension" data-field="sceneIds" data-id="{{item._id}}">
-        {{item.icon}} {{item.name}}
+        <text class="checkbox-check">{{form.sceneIds.indexOf(item._id) >= 0 ? '✓' : '+'}}</text>
+        <text>{{item.icon}} {{item.name}}</text>
       </view>
       <view class="add-dimension-btn" bindtap="toggleInlineAdd" data-type="scenes" wx:if="{{inlineAddType !== 'scenes'}}">+ 新增场景</view>
     </view>
     <view class="inline-add-row" wx:if="{{inlineAddType === 'scenes'}}">
       <input class="inline-add-input" placeholder="名称" value="{{inlineAddName}}" bindinput="onInlineNameInput" focus="{{inlineAddType === 'scenes'}}" style="flex:1;" />
       <input class="inline-add-input" placeholder="emoji" value="{{inlineAddIcon}}" bindinput="onInlineIconInput" style="width:120rpx;flex:none;" />
+      <view class="inline-cover-group">
+        <image class="inline-cover-preview" src="{{inlineAddCoverImage || '/images/placeholder.svg'}}" mode="aspectFill" />
+        <view class="inline-cover-btn" bindtap="chooseInlineDimCover">封面</view>
+      </view>
       <view class="inline-add-confirm" bindtap="confirmInlineAdd">确定</view>
       <view class="inline-add-cancel" bindtap="cancelInlineAdd">取消</view>
     </view>
@@ -108,17 +134,30 @@
   <!-- 房间 -->
   <view class="form-group">
     <text class="form-label">房间（可多选）</text>
+    <text class="dimension-tip">已选会显示在上方，点 `×` 可删除；下方点选可切换。</text>
+    <view class="selected-dimension-list" wx:if="{{selectedRooms.length}}">
+      <view class="selected-dimension-chip" wx:for="{{selectedRooms}}" wx:key="_id">
+        <text class="selected-dimension-name">✓ {{item.icon}} {{item.name}}</text>
+        <text class="selected-dimension-remove" bindtap="removeSelectedDimension" data-field="roomIds" data-id="{{item._id}}">×</text>
+      </view>
+    </view>
+    <empty-state wx:if="{{!selectedRooms.length}}" text="还未选择房间" />
     <view class="checkbox-group">
       <view class="checkbox-item {{form.roomIds.indexOf(item._id) >= 0 ? 'checked' : ''}}"
         wx:for="{{allRooms}}" wx:key="_id"
         bindtap="toggleDimension" data-field="roomIds" data-id="{{item._id}}">
-        {{item.icon}} {{item.name}}
+        <text class="checkbox-check">{{form.roomIds.indexOf(item._id) >= 0 ? '✓' : '+'}}</text>
+        <text>{{item.icon}} {{item.name}}</text>
       </view>
       <view class="add-dimension-btn" bindtap="toggleInlineAdd" data-type="rooms" wx:if="{{inlineAddType !== 'rooms'}}">+ 新增房间</view>
     </view>
     <view class="inline-add-row" wx:if="{{inlineAddType === 'rooms'}}">
       <input class="inline-add-input" placeholder="名称" value="{{inlineAddName}}" bindinput="onInlineNameInput" focus="{{inlineAddType === 'rooms'}}" style="flex:1;" />
       <input class="inline-add-input" placeholder="emoji" value="{{inlineAddIcon}}" bindinput="onInlineIconInput" style="width:120rpx;flex:none;" />
+      <view class="inline-cover-group">
+        <image class="inline-cover-preview" src="{{inlineAddCoverImage || '/images/placeholder.svg'}}" mode="aspectFill" />
+        <view class="inline-cover-btn" bindtap="chooseInlineDimCover">封面</view>
+      </view>
       <view class="inline-add-confirm" bindtap="confirmInlineAdd">确定</view>
       <view class="inline-add-cancel" bindtap="cancelInlineAdd">取消</view>
     </view>
@@ -127,11 +166,20 @@
   <!-- 标签 -->
   <view class="form-group">
     <text class="form-label">标签（可多选）</text>
+    <text class="dimension-tip">已选会显示在上方，点 `×` 可删除；下方点选可切换。</text>
+    <view class="selected-dimension-list" wx:if="{{selectedTags.length}}">
+      <view class="selected-dimension-chip" wx:for="{{selectedTags}}" wx:key="_id">
+        <text class="selected-dimension-name">✓ {{item.name}}</text>
+        <text class="selected-dimension-remove" bindtap="removeSelectedDimension" data-field="tagIds" data-id="{{item._id}}">×</text>
+      </view>
+    </view>
+    <empty-state wx:if="{{!selectedTags.length}}" text="还未选择标签" />
     <view class="checkbox-group">
       <view class="checkbox-item {{form.tagIds.indexOf(item._id) >= 0 ? 'checked' : ''}}"
         wx:for="{{allTags}}" wx:key="_id"
         bindtap="toggleDimension" data-field="tagIds" data-id="{{item._id}}">
-        {{item.name}}
+        <text class="checkbox-check">{{form.tagIds.indexOf(item._id) >= 0 ? '✓' : '+'}}</text>
+        <text>{{item.name}}</text>
       </view>
       <view class="add-dimension-btn" bindtap="toggleInlineAdd" data-type="tags" wx:if="{{inlineAddType !== 'tags'}}">+ 新增标签</view>
     </view>

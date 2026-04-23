@@ -1,6 +1,7 @@
 {
   "usingComponents": {
-    "star-rating": "/components/star-rating/index"
+    "star-rating": "/components/star-rating/index",
+    "empty-state": "/components/empty-state/index"
   },
   "navigationBarTitleText": "\u7f16\u8f91\u597d\u7269"
 }

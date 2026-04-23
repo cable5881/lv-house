@@ -14,6 +14,20 @@
 .menu-list { background: #fff; border-radius: 24rpx; border: 1px solid #ECEAE4; overflow: hidden; margin-bottom: 32rpx; }
 .menu-item { display: flex; justify-content: space-between; align-items: center; padding: 32rpx; border-bottom: 1px solid #ECEAE4; font-size: 28rpx; }
 .menu-item:last-child { border-bottom: none; }
+.menu-item-main { display: inline-flex; align-items: center; }
+.menu-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36rpx;
+  height: 36rpx;
+  padding: 0 10rpx;
+  background: #E85D5D;
+  color: #FCFBF8;
+  border-radius: 9999rpx;
+  font-size: 20rpx;
+  margin-left: 12rpx;
+}
 .arrow { color: #5F5F5D; }
 
 .favorite-section { margin-bottom: 32rpx; }

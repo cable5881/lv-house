@@ -36,5 +36,13 @@ module.exports = {
   getRooms() { return callCloud('getRooms'); },
   getTags() { return callCloud('getTags'); },
   updateUserInfo(data) { return callCloud('updateUserInfo', data); },
-  addDimension(collectionName, doc) { return callCloud('addDimension', { collectionName, doc }); }
+  addDimension(collectionName, doc) { return callCloud('addDimension', { collectionName, doc }); },
+  updateDimension(collectionName, id, updates) { return callCloud('updateDimension', { collectionName, id, updates: updates || {} }); },
+  deleteDimension(collectionName, id) { return callCloud('deleteDimension', { collectionName, id }); },
+  getPosterCode(goodsId) { return callCloud('getPosterCode', { goodsId }); },
+  getComments(params) { return callCloud('getComments', params || {}); },
+  createComment(data) { return callCloud('createComment', data || {}); },
+  deleteComment(commentId) { return callCloud('deleteComment', { commentId }); },
+  getNotifications(params) { return callCloud('getNotifications', params || {}); },
+  markNotificationRead(notificationId) { return callCloud('markNotificationRead', { notificationId }); }
 };

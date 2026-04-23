@@ -12,7 +12,9 @@ const loadCloudFunction = (modulePath, options = {}) => {
     openid = 'test-openid',
     collections = {},
     serverDate = 'SERVER_DATE',
-    command = createCommandMock()
+    command = createCommandMock(),
+    cloudOverrides = {},
+    dbOverrides = {}
   } = options;
 
   jest.resetModules();
@@ -30,13 +32,15 @@ const loadCloudFunction = (modulePath, options = {}) => {
     }),
     command,
     serverDate: jest.fn(() => serverDate),
-    RegExp: jest.fn(input => ({ $regex: input }))
+    RegExp: jest.fn(input => ({ $regex: input })),
+    ...dbOverrides
   };
 
   const cloud = {
     init: jest.fn(),
     database: jest.fn(() => db),
-    getWXContext: jest.fn(() => ({ OPENID: openid }))
+    getWXContext: jest.fn(() => ({ OPENID: openid })),
+    ...cloudOverrides
   };
 
   jest.doMock('wx-server-sdk', () => cloud, { virtual: true });

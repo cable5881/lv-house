@@ -1,0 +1,28 @@
+<view class="notice-page">
+  <empty-state wx:if="{{!notifications.length && !loading}}" text="还没有通知" />
+
+  <view class="notice-list" wx:if="{{notifications.length}}">
+    <view
+      class="notice-item {{item.isRead ? 'is-read' : ''}}"
+      wx:for="{{notifications}}"
+      wx:key="_id"
+      bindtap="openNotification"
+      data-id="{{item._id}}"
+      data-goods-id="{{item.relatedGoodsId}}"
+    >
+      <view class="notice-header">
+        <view class="notice-title-row">
+          <text class="notice-dot" wx:if="{{!item.isRead}}"></text>
+          <text class="notice-title">{{item.title}}</text>
+        </view>
+        <text class="notice-time">{{item.displayDate}}</text>
+      </view>
+      <text class="notice-content">{{item.actorSnapshot.nickName || '用户'}}：{{item.content}}</text>
+    </view>
+  </view>
+
+  <view class="loading-more" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+</view>
+

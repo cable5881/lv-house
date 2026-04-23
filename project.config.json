@@ -1,5 +1,5 @@
 {
-  "description": "小吕孩的出租屋 - 租房好物推荐",
+  "description": "租房好物推荐LAB - 租房好物推荐",
   "miniprogramRoot": "miniprogram/",
   "cloudfunctionRoot": "cloudfunctions/",
   "cloudbaseRoot": "cloudfunctions/",
@@ -54,7 +54,16 @@
     { "name": "getRooms", "root": "cloudfunctions/getRooms" },
     { "name": "getTags", "root": "cloudfunctions/getTags" },
     { "name": "updateUserInfo", "root": "cloudfunctions/updateUserInfo" },
+    { "name": "addDimension", "root": "cloudfunctions/addDimension" },
+    { "name": "updateDimension", "root": "cloudfunctions/updateDimension" },
+    { "name": "deleteDimension", "root": "cloudfunctions/deleteDimension" },
     { "name": "toggleFavorite", "root": "cloudfunctions/toggleFavorite" },
-    { "name": "getFavorites", "root": "cloudfunctions/getFavorites" }
+    { "name": "getFavorites", "root": "cloudfunctions/getFavorites" },
+    { "name": "getPosterCode", "root": "cloudfunctions/getPosterCode" },
+    { "name": "getComments", "root": "cloudfunctions/getComments" },
+    { "name": "createComment", "root": "cloudfunctions/createComment" },
+    { "name": "deleteComment", "root": "cloudfunctions/deleteComment" },
+    { "name": "getNotifications", "root": "cloudfunctions/getNotifications" },
+    { "name": "markNotificationRead", "root": "cloudfunctions/markNotificationRead" }
   ]
 }

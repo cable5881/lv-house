@@ -10,6 +10,7 @@ Page({
     favoritePage: 1,
     favoriteHasMore: true,
     favoriteLoading: false,
+    notificationUnreadCount: 0,
     genderText: '',
     showEditProfile: false,
     editBirthday: '',
@@ -25,12 +26,14 @@ Page({
     this.refreshState();
     if (getApp().globalData.isLoggedIn) {
       this.loadFavorites();
+      this.loadNotificationsSummary();
     } else {
       this.setData({
         favoriteGoods: [],
         favoritePage: 1,
         favoriteHasMore: true,
-        favoriteLoading: false
+        favoriteLoading: false,
+        notificationUnreadCount: 0
       });
     }
   },
@@ -57,6 +60,7 @@ Page({
       nextData.favoritePage = 1;
       nextData.favoriteHasMore = true;
       nextData.favoriteLoading = false;
+      nextData.notificationUnreadCount = 0;
     }
     this.setData(nextData);
   },
@@ -86,8 +90,22 @@ Page({
     }
   },
 
+  async loadNotificationsSummary() {
+    if (!this.data.isLoggedIn) return;
+    try {
+      const data = await api.getNotifications({ page: 1, pageSize: 1 });
+      this.setData({
+        notificationUnreadCount: Number(data.unreadCount) || 0
+      });
+    } catch (err) {}
+  },
+
   goLogin() {
     wx.navigateTo({ url: '/pages/login/index/index' });
+  },
+
+  goNotifications() {
+    wx.navigateTo({ url: '/pages/notice/index/index' });
   },
 
   doLogout() {

@@ -1,7 +1,7 @@
 {
   "name": "lv-house",
   "version": "1.0.0",
-  "description": "小吕孩的出租屋 - 租房好物推荐小程序",
+  "description": "租房好物推荐LAB - 租房好物推荐小程序",
   "license": "MIT",
   "private": true,
   "scripts": {

@@ -1,6 +1,7 @@
 const api = require('../../../utils/api');
 const auth = require('../../../utils/auth');
 const { formatDate } = require('../../../utils/util');
+const media = require('../../../utils/media');
 
 Page({
   data: {
@@ -19,9 +20,11 @@ Page({
     ],
     platformIndex: 0,
     allCollections: [], allScenes: [], allRooms: [], allTags: [],
+    selectedCollections: [], selectedScenes: [], selectedRooms: [], selectedTags: [],
     inlineAddType: '',
     inlineAddName: '',
-    inlineAddIcon: ''
+    inlineAddIcon: '',
+    inlineAddCoverImage: ''
   },
 
   onLoad(options) {
@@ -53,6 +56,7 @@ Page({
         allRooms: Array.isArray(rooms) ? rooms : (rooms.list || []),
         allTags: Array.isArray(tags) ? tags : (tags.list || [])
       });
+      this.syncSelectedDimensions();
     } catch (err) {
       console.error('loadDimensions error', err);
     }
@@ -79,9 +83,34 @@ Page({
         },
         platformIndex: pIdx >= 0 ? pIdx : 0
       });
+      this.syncSelectedDimensions();
     } catch (err) {
       wx.showToast({ title: '加载失败', icon: 'none' });
     }
+  },
+
+  syncSelectedDimensions() {
+    const {
+      form,
+      allCollections,
+      allScenes,
+      allRooms,
+      allTags
+    } = this.data;
+
+    const pickSelected = (list, ids) => {
+      if (!Array.isArray(list) || !Array.isArray(ids) || !ids.length) return [];
+      const map = {};
+      list.forEach(item => { if (item && item._id) map[item._id] = item; });
+      return ids.map(id => map[id]).filter(Boolean);
+    };
+
+    this.setData({
+      selectedCollections: pickSelected(allCollections, form.collectionIds),
+      selectedScenes: pickSelected(allScenes, form.sceneIds),
+      selectedRooms: pickSelected(allRooms, form.roomIds),
+      selectedTags: pickSelected(allTags, form.tagIds)
+    });
   },
 
   onInput(e) {
@@ -100,23 +129,44 @@ Page({
     const idx = arr.indexOf(id);
     if (idx >= 0) arr.splice(idx, 1); else arr.push(id);
     this.setData({ ['form.' + field]: arr });
+    this.syncSelectedDimensions();
   },
 
   // ===== 内联新增维度（通过云函数） =====
   toggleInlineAdd(e) {
     this.setData({
       inlineAddType: e.currentTarget.dataset.type,
-      inlineAddName: '', inlineAddIcon: ''
+      inlineAddName: '', inlineAddIcon: '', inlineAddCoverImage: ''
     });
   },
   cancelInlineAdd() {
-    this.setData({ inlineAddType: '', inlineAddName: '', inlineAddIcon: '' });
+    this.setData({ inlineAddType: '', inlineAddName: '', inlineAddIcon: '', inlineAddCoverImage: '' });
   },
   onInlineNameInput(e) { this.setData({ inlineAddName: e.detail.value }); },
   onInlineIconInput(e) { this.setData({ inlineAddIcon: e.detail.value }); },
 
+  async chooseInlineDimCover() {
+    const type = this.data.inlineAddType;
+    if (!['collections', 'scenes', 'rooms'].includes(type)) return;
+    const cropScale = type === 'collections' ? '16:9' : '1:1';
+    try {
+      const filePath = await media.selectEditableImage({ cropScale });
+      if (!filePath) return;
+      wx.showLoading({ title: '上传中' });
+      const ext = (filePath.split('.').pop() || 'jpg').split('?')[0];
+      const cloudPath = 'dimensions/' + type + '/' + Date.now() + '_' + Math.random().toString(36).substr(2, 6) + '.' + ext;
+      const up = await wx.cloud.uploadFile({ cloudPath, filePath });
+      this.setData({ inlineAddCoverImage: up.fileID });
+    } catch (err) {
+      if (!media.isCancelError(err)) {
+        wx.showToast({ title: media.getErrorMessage(err) || '上传失败', icon: 'none' });
+      }
+    }
+    wx.hideLoading();
+  },
+
   async confirmInlineAdd() {
-    const { inlineAddType, inlineAddName, inlineAddIcon } = this.data;
+    const { inlineAddType, inlineAddName, inlineAddIcon, inlineAddCoverImage } = this.data;
     if (!inlineAddName.trim()) {
       wx.showToast({ title: '请输入名称', icon: 'none' });
       return;
@@ -128,25 +178,43 @@ Page({
       if (inlineAddType === 'collections') {
         doc.title = inlineAddName.trim();
         doc.periodLabel = inlineAddName.trim();
+        doc.coverImage = inlineAddCoverImage || '';
       } else if (inlineAddType === 'tags') {
         doc.name = inlineAddName.trim();
       } else {
         doc.name = inlineAddName.trim();
         doc.icon = inlineAddIcon.trim() || '';
+        doc.coverImage = inlineAddCoverImage || '';
       }
 
       // 通过云函数写入（绕过客户端权限限制）
       const newDoc = await api.addDimension(inlineAddType, doc);
+      if (inlineAddCoverImage && !(newDoc && newDoc.coverImage)) {
+        wx.showModal({
+          title: '封面未写入数据库',
+          content: '已上传图片，但新增维度返回里没有 coverImage 字段。请重新上传并部署云函数 addDimension 后再试。',
+          showCancel: false
+        });
+      }
 
       const fieldMap = {
         collections: 'allCollections', scenes: 'allScenes',
         rooms: 'allRooms', tags: 'allTags'
       };
+      const formFieldMap = {
+        collections: 'collectionIds',
+        scenes: 'sceneIds',
+        rooms: 'roomIds',
+        tags: 'tagIds'
+      };
       const list = [...this.data[fieldMap[inlineAddType]], newDoc];
+      const nextIds = [...this.data.form[formFieldMap[inlineAddType]], newDoc._id];
       this.setData({
         [fieldMap[inlineAddType]]: list,
-        inlineAddType: '', inlineAddName: '', inlineAddIcon: ''
+        ['form.' + formFieldMap[inlineAddType]]: nextIds,
+        inlineAddType: '', inlineAddName: '', inlineAddIcon: '', inlineAddCoverImage: ''
       });
+      this.syncSelectedDimensions();
 
       wx.hideLoading();
       wx.showToast({ title: '添加成功', icon: 'success' });
@@ -157,14 +225,28 @@ Page({
     }
   },
 
+  removeSelectedDimension(e) {
+    const { field, id } = e.currentTarget.dataset;
+    const list = [...this.data.form[field]].filter(itemId => itemId !== id);
+    this.setData({ ['form.' + field]: list });
+    this.syncSelectedDimensions();
+  },
+
   // ===== 图片 =====
   chooseImage() {
-    wx.chooseMedia({
-      count: 9 - this.data.form.images.length,
-      mediaType: ['image'],
-      sourceType: ['album', 'camera'],
-      success: (res) => this.uploadImages(res.tempFiles.map(f => f.tempFilePath))
-    });
+    this.chooseGoodsImage();
+  },
+  async chooseGoodsImage() {
+    if (this.data.form.images.length >= 9) return;
+    try {
+      const filePath = await media.selectEditableImage({ cropScale: '4:3' });
+      if (!filePath) return;
+      await this.uploadImages([filePath]);
+    } catch (err) {
+      if (!media.isCancelError(err)) {
+        wx.showToast({ title: media.getErrorMessage(err) || '选图失败', icon: 'none' });
+      }
+    }
   },
   async uploadImages(tempPaths) {
     wx.showLoading({ title: '上传中' });
