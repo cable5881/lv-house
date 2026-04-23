@@ -7,7 +7,8 @@ Page({
     goods: null,
     relatedGoods: [],
     shelfTimeText: '',
-    isAdmin: false
+    isAdmin: false,
+    favoriteLoading: false
   },
 
   onLoad(options) {
@@ -69,6 +70,40 @@ Page({
       });
     } else {
       wx.showToast({ title: '暂无购买链接', icon: 'none' });
+    }
+  },
+
+  async toggleFavorite() {
+    if (!auth.isLoggedIn()) {
+      wx.showModal({
+        title: '需要登录',
+        content: '登录后才能收藏好物，是否前往登录？',
+        success: (res) => {
+          if (res.confirm) {
+            wx.navigateTo({ url: '/pages/login/index/index' });
+          }
+        }
+      });
+      return;
+    }
+
+    if (this.data.favoriteLoading || !this.data.goods) return;
+
+    this.setData({ favoriteLoading: true });
+    try {
+      const result = await api.toggleFavorite(this.goodsId);
+      this.setData({
+        'goods.isFavorited': result.favorited,
+        'goods.likeCount': result.likeCount,
+        favoriteLoading: false
+      });
+      wx.showToast({
+        title: result.favorited ? '已收藏' : '已取消收藏',
+        icon: 'success'
+      });
+    } catch (err) {
+      this.setData({ favoriteLoading: false });
+      wx.showToast({ title: err.message || '操作失败', icon: 'none' });
     }
   },
 

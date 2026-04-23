@@ -16,6 +16,12 @@
 .menu-item:last-child { border-bottom: none; }
 .arrow { color: #5F5F5D; }
 
+.favorite-section { margin-bottom: 32rpx; }
+.favorite-count { font-size: 24rpx; color: #5F5F5D; }
+.goods-grid { display: flex; flex-wrap: wrap; margin: 0 -10rpx; }
+.goods-grid-item { width: 50%; padding: 0 10rpx; box-sizing: border-box; }
+.loading-more { text-align: center; color: #5F5F5D; font-size: 24rpx; padding: 24rpx 0; }
+
 /* 编辑弹窗 */
 .edit-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.4); z-index: 1000; display: flex; align-items: flex-end; }
 .edit-panel { background: #fff; width: 100%; border-radius: 24rpx 24rpx 0 0; padding: 40rpx 32rpx; padding-bottom: calc(40rpx + env(safe-area-inset-bottom)); }

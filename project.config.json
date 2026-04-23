@@ -53,6 +53,8 @@
     { "name": "getScenes", "root": "cloudfunctions/getScenes" },
     { "name": "getRooms", "root": "cloudfunctions/getRooms" },
     { "name": "getTags", "root": "cloudfunctions/getTags" },
-    { "name": "updateUserInfo", "root": "cloudfunctions/updateUserInfo" }
+    { "name": "updateUserInfo", "root": "cloudfunctions/updateUserInfo" },
+    { "name": "toggleFavorite", "root": "cloudfunctions/toggleFavorite" },
+    { "name": "getFavorites", "root": "cloudfunctions/getFavorites" }
   ]
 }

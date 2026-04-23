@@ -39,3 +39,18 @@ lv-house/
 4. 初始化数据库集合：users, goods, collections, scenes, rooms, tags
 5. 部署全部云函数
 6. 编译运行
+
+## 自动化测试
+
+- 安装依赖：`npm install`
+- 运行全部测试：`npm test`
+- 监听模式：`npm run test:watch`
+- 查看覆盖率：`npm run test:coverage`
+- 统一校验命令：`npm run verify`
+
+### 后续开发约定
+
+- 每次修改后至少执行一次 `npm test`
+- 提交前建议执行 `npm run verify`
+- 如果修改了 `miniprogram/utils` 或 `cloudfunctions`，需要同步补充或更新对应测试
+- 已启用 `.husky/pre-commit`，本地提交前会自动执行 `npm test`

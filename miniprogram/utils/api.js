@@ -15,6 +15,10 @@ const callCloud = (name, data = {}) => {
     throw new Error(msg);
   }).catch(err => {
     console.error('[云函数] ' + name + ' 调用失败:', err);
+    const rawMsg = String((err && (err.errMsg || err.message)) || '');
+    if (/FUNCTION_NOT_FOUND|FunctionName parameter could not be found/i.test(rawMsg)) {
+      throw new Error(`云函数 ${name} 未部署，请在微信开发者工具中上传并部署后重试`);
+    }
     throw err;
   });
 };
@@ -23,6 +27,8 @@ module.exports = {
   login() { return callCloud('login'); },
   getGoods(params) { return callCloud('getGoods', params || {}); },
   getGoodsDetail(id) { return callCloud('getGoodsDetail', { id }); },
+  getFavorites(params) { return callCloud('getFavorites', params || {}); },
+  toggleFavorite(goodsId) { return callCloud('toggleFavorite', { goodsId }); },
   saveGoods(data) { return callCloud('saveGoods', data); },
   deleteGoods(id) { return callCloud('deleteGoods', { id }); },
   getCollections(params) { return callCloud('getCollections', params || {}); },

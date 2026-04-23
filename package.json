@@ -3,5 +3,16 @@
   "version": "1.0.0",
   "description": "小吕孩的出租屋 - 租房好物推荐小程序",
   "license": "MIT",
-  "private": true
+  "private": true,
+  "scripts": {
+    "test": "jest --runInBand",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --runInBand --coverage",
+    "verify": "npm test",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "husky": "^9.1.7",
+    "jest": "^29.7.0"
+  }
 }

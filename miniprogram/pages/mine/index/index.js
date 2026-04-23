@@ -6,6 +6,10 @@ Page({
     isLoggedIn: false,
     isAdmin: false,
     userInfo: null,
+    favoriteGoods: [],
+    favoritePage: 1,
+    favoriteHasMore: true,
+    favoriteLoading: false,
     genderText: '',
     showEditProfile: false,
     editBirthday: '',
@@ -19,6 +23,22 @@ Page({
 
   onShow() {
     this.refreshState();
+    if (getApp().globalData.isLoggedIn) {
+      this.loadFavorites();
+    } else {
+      this.setData({
+        favoriteGoods: [],
+        favoritePage: 1,
+        favoriteHasMore: true,
+        favoriteLoading: false
+      });
+    }
+  },
+
+  onReachBottom() {
+    if (this.data.isLoggedIn && this.data.favoriteHasMore && !this.data.favoriteLoading) {
+      this.loadFavorites(true);
+    }
   },
 
   refreshState() {
@@ -31,7 +51,39 @@ Page({
       if (userInfo.gender === 1) genderText = '👨 男';
       else if (userInfo.gender === 2) genderText = '👩 女';
     }
-    this.setData({ isLoggedIn, userInfo, isAdmin, genderText });
+    const nextData = { isLoggedIn, userInfo, isAdmin, genderText };
+    if (!isLoggedIn) {
+      nextData.favoriteGoods = [];
+      nextData.favoritePage = 1;
+      nextData.favoriteHasMore = true;
+      nextData.favoriteLoading = false;
+    }
+    this.setData(nextData);
+  },
+
+  async loadFavorites(append) {
+    if (!this.data.isLoggedIn) return;
+    const page = append ? this.data.favoritePage + 1 : 1;
+    this.setData({ favoriteLoading: true });
+    try {
+      const data = await api.getFavorites({ page, pageSize: 10 });
+      const list = data.list || data;
+      this.setData({
+        favoriteGoods: append ? this.data.favoriteGoods.concat(list) : list,
+        favoritePage: page,
+        favoriteHasMore: list.length >= 10,
+        favoriteLoading: false
+      });
+    } catch (err) {
+      this.setData({ favoriteLoading: false });
+      if (!append) {
+        this.setData({
+          favoriteGoods: [],
+          favoritePage: 1,
+          favoriteHasMore: true
+        });
+      }
+    }
   },
 
   goLogin() {
